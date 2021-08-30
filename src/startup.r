@@ -14,9 +14,9 @@ suppressPackageStartupMessages({
   library(tictoc)
   library(tidyverse)
   library(uuid)
+  require(dplyr)
   library(data.table)
-  library(scales)
-  library(cowplot)
+  library(Hmisc) 
 }))
 
 

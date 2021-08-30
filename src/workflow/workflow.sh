@@ -1,12 +1,12 @@
 #!/bin/bash
-chmod +x ~/Documents/Yale/projects/wi-coverage/workflow/workflow.sh
+chmod +x ~/Documents/Yale/projects/data-coverage/src/workflow/workflow.sh
 
 #-- parameters
-wd=~/Documents/Yale/projects/wi-coverage
-src=~/Documents/Yale/projects/wi-coverage/src
+wd=~/Documents/Yale/projects/data-coverage
+src=~/Documents/Yale/projects/data-coverage/src
 
 cd $wd
 
-chmod 744 $src/poc/plot-data-summary.r #Use to make executable
+chmod 744 $src/poc/find_coverage.r #Use to make executable
 
-$src/poc/plot-data-summary.r data/ analysis/
+$src/poc/find_coverage.r birds 1950 2019
