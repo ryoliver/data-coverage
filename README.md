@@ -24,6 +24,7 @@ Rework coverage workflow to support wider applications
 |date|activity|
 |:-|:------------|
 |2021-08-30|create repo|
+||start coverage scripts|
 
 ## notes
 * 
