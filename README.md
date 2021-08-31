@@ -16,8 +16,9 @@ Rework coverage workflow to support wider applications
 * generate output which stores metadata
 
 ## to do:
-* establish repo on HPC
 * separate functions from main script
+* check file paths/variable names
+* debug WI issue
 
 ## activity log:
 
@@ -25,7 +26,8 @@ Rework coverage workflow to support wider applications
 |:-|:------------|
 |2021-08-30|create repo|
 ||start coverage scripts|
+|2021-08-31|set up repo on farnam|
+||extract functions from main script|
 
 ## notes
-* now on farnam 
-* back on local
+
