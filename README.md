@@ -28,3 +28,4 @@ Rework coverage workflow to support wider applications
 
 ## notes
 * now on farnam 
+* back on local
