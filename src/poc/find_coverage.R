@@ -8,13 +8,15 @@
 '
 Template
 Usage:
-find_coverage <taxa> <year1> <year2> [--db=<db>] [-t]
+find_coverage <taxa> <year1> <year2> <dataid> [-t]
 find_coverage (-h | --help)
 Control files:
   ctfs/individual.csv
 Parameters:
-  dat: path to input csv file. 
-  out: path to output directory.
+  taxa: taxa name. 
+  year1: starting year.
+  year2: ending year.
+  dataid: id of occurrence dataset
 Options:
 -h --help     Show this screen.
 -v --version     Show version.
@@ -24,12 +26,18 @@ Options:
 #---- Input Parameters ----#
 if(interactive()) {
   library(here)
+  rm(list=ls())
   
-  .wd <- '~/Documents/Yale/projects/easy-breezy' #UPDATE
+  .wd <- '/gpfs/ysm/project/jetz/ryo3' 
   .test <- TRUE
   rd <- here::here
   
+  # default to mammals 1950-2019
   .outPF <- file.path('/gpfs/ysm/scratch60/jetz/ryo3/coverage_output')
+  .taxa_name <- "mammals"
+  .year_start <- 1950
+  .year_end <- 2019
+  .data_source <- "202004"
 
 } else {
   library(docopt)
@@ -37,7 +45,7 @@ if(interactive()) {
   library(whereami)
   
   ag <- docopt(doc, version = '0.1\n')
-  .wd <- getwd()
+  .wd <- '/gpfs/ysm/project/jetz/ryo3' 
   .script <-  whereami::thisfile()
   .test <- as.logical(ag$test)
   rd <- is_rstudio_project$make_fix_file(.script)
@@ -49,128 +57,60 @@ if(interactive()) {
   .taxa_name <- ag$taxa
   .year_start <- as.numeric(ag$year1)
   .year_end <- as.numeric(ag$year2)
-  
+  .data_source <- ag$dataid
 }
 
-message(.taxa_name)
-message(.year_start)
-message(.year_end)
-message(.year_start + .year_end)
 
-if (1 == 2){
-  
+#---- Initialize Environment ----#
+t0 <- Sys.time()
+
+source(rd('src/startup.r'))
+
+#Source all files in the auto load funs directory
+list.files(rd('src/funs/auto'),full.names=TRUE) %>%
+  walk(source)
 
 
-##################################################
-### set time span and output file path
-year_start <- 1950
-year_end <- 2019
-output_file_path <- "/home/ryo3/scratch60/coverage_output/"
-##################################################
+message(glue("taxa: ",.taxa_name))
+message(glue("start: ",.year_start))
+message(glue("end: ",.year_end))
+
 
 ##################################################
 ### occurrence data source
-data_source <- "202004"
 
 # 2020 data dump
 if (data_source == "202004"){
-  gbif_file_path <- paste0("/home/ryo3/project/gbif-data-202004/",taxa_name,"/updated-files/")
-  ebird_file_path <- "/home/ryo3/project/ebird-data-202003/updated-files/"
-  wi_file_path <- "/home/ryo3/project/wi-data"
+  gbif_file_path <- file.path(.wd,"gbif-data-202004",.taxa_name,"updated-files/")
+  ebird_file_path <- file.path(.wd,"ebird-data-202003/updated-files/")
+  wi_file_path <-   file.path(.wd,"wi-data")
 }
 
 # 2018 data dump
 if (data_source == "201810"){
-  gbif_file_path <- paste0("/home/ryo3/project/gbif-data/",taxa_name,"/updated-files/")
-  ebird_file_path <- "/home/ryo3/project/ebird-data/updated-files/"
+  gbif_file_path <- file.path(.wd,"gbif-data",.taxa_name,"updated-files/")
+  ebird_file_path <- file.path(.wd,"ebird-data/updated-files/")
 }
 ##################################################
 
 ##################################################
-### synonym lists
-# function to convert double list format synonym lists
-convert_synlist <- function(file_name){
-  synlist <- fread(file_name)
-  
-  names(synlist) <- tolower(names(synlist))
-  
-  accepted <- synlist %>% filter(accid == 0)
-  synonym <- synlist %>% filter(accid > 0)
-  accepted_dup <- accepted
-  accepted_dup$accid <- accepted_dup$id
-  syns_all <- rbind(synonym,accepted_dup)
-  
-  synlist <- left_join(accepted,syns_all,by=c("id" = "accid")) 
-  
-  synlist <- synlist %>%
-    select(canonical.x,canonical.y) %>%
-    rename("Accepted" = canonical.x, "Synonym" = canonical.y) %>%
-    distinct(Accepted,Synonym) %>% 
-    group_by(Synonym) %>%
-    mutate("U.or.A" = if_else(n() == 1, "U","A")) %>%
-    ungroup()
-}
+### synonym list
+# pull synonym list
+synlist <- prep_taxonomy(.taxa_name)
 
-# synonym list directory/file names
-synlist_dir <- "/home/ryo3/scratch60/synonym-lists/"
+# species x 360 grid intersection
+grid_ranges <- get_intersection(.taxa_name)
 
-if(taxa_name == "amphibians"){
-  synlist_file <- paste0(synlist_dir,"Amphibians_20191210.csv")
-  synlist <- convert_synlist(synlist_file) %>% filter(U.or.A == "U") # filter out ambiguous name matches
-}
 
-if(taxa_name == "birds"){
-  synlist_file <- paste0(synlist_dir,"Birds_20191204.csv")
-  synlist <- convert_synlist(synlist_file) %>% filter(U.or.A == "U") # filter out ambiguous name matches
-  
-  syns_birds_manual <- data.frame("Accepted" = c("Ardea albus",
-                                                 "Ardea albus",
-                                                 "Anas poecilorhyncha",
-                                                 "Haliaeetus ichthyaetus",
-                                                 "Butorides virescens",
-                                                 "Colaptes auratus",
-                                                 "Buteo rufinus",
-                                                 "Psophia crepitans",
-                                                 "Cinclodes fuscus",
-                                                 "Hydrornis guajanus",
-                                                 "Alethe diademata",
-                                                 "Neomorphus squamiger",
-                                                 "Psophia viridis",
-                                                 "Turdus nudigenis"),
-                                  "Synonym" = c("Ardea modestus",
-                                                "Ardea albus",
-                                                "Anas poecilorhyncha",
-                                                "Icthyophaga ichthyaetus",
-                                                "Butorides virescens",
-                                                "Colaptes cafer",
-                                                "Buteo rufinus",
-                                                "Psophia ochroptera",
-                                                "Cinclodes fuscus",
-                                                "Pitta guajana",
-                                                "Alethe castanea",
-                                                "Neomorphus squamiger",
-                                                "Psophia obscura",
-                                                "Turdus nudigenis")) %>%
-    mutate("U.or.A" = rep("U",nrow(.)))
-  synlist <- rbind(synlist,syns_birds_manual)
-}
-  
-if(taxa_name == "mammals"){
-  synlist_file <- paste0(synlist_dir,"Mammal_20191204.csv")
-  synlist <- convert_synlist(synlist_file) %>% filter(U.or.A == "U") # filter out ambiguous name matches
-}
 
-if(taxa_name == "reptiles"){
-  synlist_file <- paste0(synlist_dir,"Reptile_20191211.csv")
-  synlist <- convert_synlist(synlist_file) %>% filter(U.or.A == "U") # filter out ambiguous name matches
-}
 ##################################################
 
 
 ##################################################
 ### expected occurrence
 # GADM x 360 grid intersection
-grid_file_path <- "/home/ryo3/project/grid360/output/"
+
+grid_file_path <- file.path(.wd,"grid360/output/")
 
 # read in grid
 setwd(grid_file_path)
@@ -183,7 +123,7 @@ end <- Sys.time()
 print(end - start)
 
 # read in GADM
-gadm_file_path <- "/home/ryo3/project/gadm36/output"
+gadm_file_path <- file.path(.wd,"gadm36/output/")
 setwd(gadm_file_path)
 files <- list.files(gadm_file_path,pattern = "*geohash5.csv",full.names = FALSE)
 
@@ -197,7 +137,7 @@ print(end - start)
 gadm <- gadm %>% filter(prop >= 0.5)
 
 # read in country names (linked to geom ids)
-gadm_names <- read.csv("/home/ryo3/project/gadm36/input/gadm36_list.csv",stringsAsFactors = FALSE)
+gadm_names <- read.csv(file.path(.wd,"gadm36/input/gadm36_list.csv"),stringsAsFactors = FALSE)
 gadm <- dplyr::left_join(gadm,gadm_names,by= "geom_id")
 
 # join GADM with 360 grid
@@ -205,10 +145,9 @@ print("joining GADM and 360 grid:")
 grid_gadm_join <- dplyr::left_join(grid,gadm,by="geohash") %>%
   rename("hbwid" = "geom_id.x","country" = "name")
 
-  
 ### find proportion of grid cell in country
 # read in geohash areas
-geohash_area <- data.table::fread("/home/ryo3/project/geohash_area/geohash_area.csv")
+geohash_area <- data.table::fread(file.path(.wd,"geohash_area/geohash_area.csv"))
 
 # find grid cell area based on geohashes
 grid <- dplyr::left_join(grid,geohash_area,by="geohash") 
@@ -235,71 +174,8 @@ grid_gadm <- dplyr::left_join(grid_gadm, grid, by = "hbwid") %>%
 fwrite(grid_gadm,paste0(output_file_path,"gadm-360grid-area-summary.csv"))
 
 
-print("proportion of 360 grid cell in country:")
-range(grid_gadm$prop_grid_country)
-
-test <- grid_gadm %>% filter(prop_grid_country > 1)
-if (nrow(test) > 1){
-  print("ERROR: proportion of grid cell in country")
-}else {
-  print("OK: proportion of grid cell in country")
-}
-
-
-
-# species x 360 grid intersection
-if (taxa_name == "amphibians"){
-  grid.ranges.df <- read.csv("/home/ryo3/project/geohash_grid_range_join/amphibians_360grid_join.csv",stringsAsFactors = FALSE)
-  grid_ranges <- rename(grid.ranges.df,"hbwid" = "geom_id")
-  
-  grid_ranges = dplyr::left_join(grid_ranges,synlist,by=c("scientificname"="Synonym")) %>% 
-    filter(!is.na(Accepted)) %>% 
-    select(hbwid,Accepted) %>%
-    rename("scientificname" = "Accepted") 
-}
-
-if (taxa_name == "birds"){
-  grid.ranges.df <- read.csv("/home/ryo3/project/geohash_grid_range_join/birds_360grid_join.csv",stringsAsFactors = FALSE)
-  grid_ranges <- grid.ranges.df %>%
-    filter(seasonality %in% c(1,2))
-  
-  #grid_ranges <- fread("/home/ryo3/project/geohash_grid_range_join/birds_360grid_MOL_202010.csv") %>%
-  #  filter(season %in% c(1,2)) %>%
-  #  select(sciname,ID_360) %>%
-  #  rename("scientificname" = "sciname",
-  #         "hbwid" = "ID_360")
-  
-  grid_ranges = dplyr::left_join(grid_ranges,synlist,by=c("scientificname"="Synonym")) %>% 
-    filter(!is.na(Accepted)) %>% 
-    select(hbwid,Accepted) %>%
-    rename("scientificname" = "Accepted") 
-}
-
-if (taxa_name == "mammals"){
-  grid.ranges.df <- read.csv("/home/ryo3/project/geohash_grid_range_join/mammals_360grid_join.csv",stringsAsFactors = FALSE)
-  grid_ranges <- rename(grid.ranges.df,"hbwid" = "geom_id")
-  
-  grid_ranges = dplyr::left_join(grid_ranges,synlist,by=c("scientificname"="Synonym")) %>% 
-    filter(!is.na(Accepted)) %>% 
-    select(hbwid,Accepted) %>%
-    rename("scientificname" = "Accepted") 
-}
-
-
-if (taxa_name == "reptiles"){
-  grid.ranges.df <- read.csv("/home/ryo3/project/geohash_grid_range_join/gard_reptiles_360grid_join.csv",stringsAsFactors = FALSE)
-  grid_ranges <- rename(grid.ranges.df,"hbwid" = "geom_id")
-  
-  grid_ranges = dplyr::left_join(grid_ranges,synlist,by=c("scientificname"="Synonym")) %>% 
-    filter(!is.na(Accepted)) %>% 
-    select(hbwid,Accepted) %>%
-    rename("scientificname" = "Accepted") 
-}
-
-
 ## find expected species in each grid cell
 grid_gadm_ranges <- dplyr::left_join(grid_gadm,grid_ranges,by = "hbwid") %>% filter(!is.na(scientificname))
-fwrite(grid_gadm_ranges,paste0("/home/ryo3/project/geohash_grid_range_join/",taxa_name,"_360grid_gadm_join.csv"))
 
 
 ### grid level
@@ -331,11 +207,9 @@ global.expected <- grid_gadm_ranges %>%
 
 # link country and global range sizes for each species
 species.expected <- dplyr::left_join(country.expected.expanded,global.expected,by="scientificname") # DOES THIS NEED TO INCLUDE YEAR?
-#species.expected <- dplyr::left_join(country.expected,global.expected,by="scientificname") # DOES THIS NEED TO INCLUDE YEAR?
-
 
 # find stewardship of each species in each country
-# number of grid cells of expected occurence for each species within a country vs. globally
+# number of grid cells of expected occurrence for each species within a country vs. globally
 species.expected$Eci_Eki <- species.expected$Eci/species.expected$Eki
 
 
@@ -362,125 +236,6 @@ expected <- dplyr::left_join(species.expected,country.stewardship,by="country")
 ### data processing functions
 ##################################################
 
-### processing occurrence data
-prep_occurrence_data <- function(occ_data){
-  
-  occ_data <- occ_data %>% filter(year >= year_start) 
-  
-  # find distinct records
-  print("finding distinct observations...")
-  occ_data <- occ_data %>% distinct(scientificname,geohash,year,.keep_all = TRUE)
-  
-  # join observations with synonym list
-  print("joining with synonym list...")
-  occ_syn_join=dplyr::left_join(occ_data,synlist,by=c("scientificname"="Synonym"))
-  
-  # filter out observations without synonym match or date
-  occ_data <- occ_syn_join %>% filter(!is.na(Accepted)) %>% 
-    select(year,Accepted,geohash) %>%
-    rename("scientificname" = "Accepted") %>%
-    distinct(scientificname,year,geohash)
-  
-  print("joining observations with 360 grid x GADM...")
-  #grid_gadm_occ <-  dplyr::left_join(grid_gadm_join,occ_data,by="geohash") %>%
-    #filter(!is.na(scientificname)) %>%
-    #distinct(hbwid,country,scientificname,year)
-  
-  # filter to just geohashes where intersection could be confirmed
-  # more conservative than approach above
-  grid_gadm_occ <- left_join(occ_data,candidate_gh, by = "geohash") %>%
-    filter(!is.na(hbwid)) %>%
-    filter(!is.na(country)) %>%
-    distinct(hbwid,country,scientificname,year)
-  
-  # join with expected grid cells to restrict observations only within ranges
-  print("filtering to observations within range...")
-  range_obs_join <- dplyr::left_join(grid_gadm_ranges,grid_gadm_occ,by=c("hbwid","country","scientificname"))
-  occ_data <- range_obs_join %>% 
-    filter(!is.na(year)) %>%
-    distinct(hbwid,country,scientificname,year,.keep_all = TRUE)
-
-  return(occ_data)
-}
-
-
-
-prep_data_summary <- function(occ_data){
-  
-  record_summary <- data.frame("total" = c(0), "no_dups" = c(0), "valid" = c(0))
-  record_summary$total <- nrow(occ_data)
-  
-  occ_data <- occ_data %>% 
-    filter(year >= year_start) %>%
-    distinct(scientificname,latitude,longitude,eventdate, .keep_all = TRUE) %>%
-    select(scientificname,geohash,year)
-  
-  record_summary$no_dups <- nrow(occ_data)
-  
-  # join observations with synonym list
-  occ_syn_join=dplyr::left_join(occ_data,synlist,by=c("scientificname"="Synonym"))
-  
-  # filter out observations without synonym match or date
-  occ_data <- occ_syn_join %>% filter(!is.na(Accepted)) %>% 
-    select(Accepted,geohash,year) %>%
-    rename("scientificname" = "Accepted") 
-  
-  grid_gadm_occ <- left_join(occ_data,candidate_gh, by = "geohash") %>%
-    filter(!is.na(hbwid)) %>%
-    filter(!is.na(country)) %>%
-    select(country,hbwid,scientificname,year)
-  
-  # join with expected grid cells to restrict observations only within ranges
-  range_obs_join <- dplyr::left_join(grid_gadm_ranges,grid_gadm_occ,by=c("hbwid","country","scientificname")) 
-  occ_data <- range_obs_join %>% 
-    filter(!is.na(year)) %>%
-    select(hbwid,country,scientificname,year)
-  
-  record_summary$valid <- nrow(occ_data)
-  fwrite(record_summary,paste0(output_file_path,taxa_name,"_record_summary_",data_source,".csv"))
-  
-  return(occ_data)
-}
-
-summarize_species_national_data <- function(occ_data){
-  summary <- occ_data %>%
-    group_by(country,scientificname,year) %>%
-    summarise("n_records" = n(),
-              "n_unique" = n_distinct(country,hbwid,scientificname,year))
-  return(summary)
-}
-
-
-summarize_species_data <- function(occ_data){
-  summary <- occ_data %>%
-    group_by(scientificname,year) %>%
-    summarise("n_records" = n(),
-              "n_unique" = n_distinct(hbwid,scientificname,year))
-  return(summary)
-}
-
-
-summarize_species_grid_national_data <- function(occ_data){
-  summary <- occ_data %>%
-    group_by(country,hbwid,scientificname,year) %>%
-    summarise("n_records" = n())
-  return(summary)
-}
-
-
-summarize_grid_national_data <- function(occ_data){
-  summary <- occ_data %>%
-    group_by(country,hbwid,year) %>%
-    summarise("n_records" = n())
-  return(summary)
-}
-
-summarize_grid_data <- function(occ_data){
-  summary <- occ_data %>%
-    group_by(hbwid,year) %>%
-    summarise("n_records" = n())
-  return(summary)
-}
 
 
 find_national_coverage <- function(occ_data){
