@@ -27,4 +27,4 @@ Rework coverage workflow to support wider applications
 ||start coverage scripts|
 
 ## notes
-* 
+* now on farnam 
