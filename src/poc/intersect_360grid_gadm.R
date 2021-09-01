@@ -50,7 +50,7 @@ if(interactive()) {
 #---- Initialize Environment ----#
 # check if intersection exists
 # if exists, don't run
-if (!file.exists(file.path(.outPF,"intersection-gadm-360grid.csv"))){
+if (file.exists(file.path(.outPF,"intersection-gadm-360grid.csv"))){
   message("intersection already exists...")
 }else{
 
