@@ -1,3 +1,7 @@
+##################################################
+### data processing functions
+##################################################
+
 ### processing occurrence data
 prep_occurrence_data <- function(occ_data){
   
