@@ -9,11 +9,11 @@ cd $wd
 
 #make executable
 chmod +x $src/workflow/run_intersection.sh
-chmod 744 $src/poc/find_coverage.r
-chmod 744 $src/poc/intersect_360grid_gadm.r
+#chmod 744 $src/poc/find_coverage.r
+#chmod 744 $src/poc/intersect_360grid_gadm.r
 
 #run intersection between 360 grid and GADM
-$src/workflow/run_intersection.sh
+sbatch $src/workflow/run_intersection.sh
 
 #find covearge
 #$src/poc/find_coverage.r birds 1950 2019
