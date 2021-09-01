@@ -28,6 +28,8 @@ Rework coverage workflow to support wider applications
 ||start coverage scripts|
 |2021-08-31|set up repo on farnam|
 ||extract functions from main script|
+|2021-09-01|extracted functions from main script|
+
 
 ## notes
-
+* does the 360 grid x GADM intersection need to happen in each run?
