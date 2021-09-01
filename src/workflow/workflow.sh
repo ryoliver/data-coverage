@@ -2,10 +2,10 @@
 chmod +x /gpfs/ysm/project/jetz/ryo3/projects/data-coverage/src/workflow/workflow.sh
 
 #-- parameters
-wd=/gpfs/ysm/project/jetz/ryo3/projects/data-coverage
+#wd=/gpfs/ysm/project/jetz/ryo3/projects/data-coverage
 src=/gpfs/ysm/project/jetz/ryo3/projects/data-coverage/src
 
-cd $wd
+#cd $wd
 
 #make executable
 chmod +x $src/workflow/run_intersection.sh
