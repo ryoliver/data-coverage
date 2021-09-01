@@ -10,8 +10,6 @@ Template
 Usage:
 find_coverage <taxa> <year1> <year2> <dataid> [-t]
 find_coverage (-h | --help)
-Control files:
-  ctfs/individual.csv
 Parameters:
   taxa: taxa name. 
   year1: starting year.

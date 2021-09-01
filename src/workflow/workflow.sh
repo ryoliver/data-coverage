@@ -1,12 +1,19 @@
 #!/bin/bash
-chmod +x ~/Documents/Yale/projects/data-coverage/src/workflow/workflow.sh
+chmod +x /gpfs/ysm/project/jetz/ryo3/projects/data-coverage/src/workflow/workflow.sh
 
 #-- parameters
-wd=~/Documents/Yale/projects/data-coverage
-src=~/Documents/Yale/projects/data-coverage/src
+wd=/gpfs/ysm/project/jetz/ryo3/projects/data-coverage
+src=/gpfs/ysm/project/jetz/ryo3/projects/data-coverage/src
 
 cd $wd
 
-chmod 744 $src/poc/find_coverage.r #Use to make executable
+#make executable
+chmod +x $src/workflow/run_intersection.sh
+chmod 744 $src/poc/find_coverage.r
+chmod 744 $src/poc/intersect_360grid_gadm.r
 
-$src/poc/find_coverage.r birds 1950 2019
+#run intersection between 360 grid and GADM
+$src/workflow/run_intersection.sh
+
+#find covearge
+#$src/poc/find_coverage.r birds 1950 2019
