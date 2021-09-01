@@ -1,8 +1,6 @@
 prep_taxonomy <- function(taxa_name){
   # synonym list directory/file names
-  #synlist_dir <- "/home/ryo3/scratch60/synonym-lists/"
-  synlist_dir <- "~/Documents/Yale/data/synonym-lists/"
-  
+  synlist_dir <- "/home/ryo3/scratch60/synonym-lists/"
   
   if(taxa_name == "amphibians"){
     synlist_file <- paste0(synlist_dir,"Amphibians_20191210.csv")

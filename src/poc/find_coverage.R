@@ -50,7 +50,7 @@ if(interactive()) {
   .test <- as.logical(ag$test)
   rd <- is_rstudio_project$make_fix_file(.script)
   
-  source(rd('src/funs/input_parse.r'))
+  source(file.path(.wd,"projects/data-coverage/src/funs/input_parse.r"))
   
   #.datPF <- makePath(ag$dat)
   #.outPF <- makePath(ag$out)
@@ -64,12 +64,11 @@ if(interactive()) {
 #---- Initialize Environment ----#
 t0 <- Sys.time()
 
-source(rd('src/startup.r'))
+source(file.path(.wd,"projects/data-coverage/src/startup.r"))
 
 #Source all files in the auto load funs directory
-list.files(rd('src/funs/auto'),full.names=TRUE) %>%
+list.files(file.path(.wd,"projects/data-coverage/src/funs/auto"),full.names=TRUE) %>%
   walk(source)
-
 
 message(glue("taxa: ",.taxa_name))
 message(glue("start: ",.year_start))
@@ -80,14 +79,14 @@ message(glue("end: ",.year_end))
 ### occurrence data source
 
 # 2020 data dump
-if (data_source == "202004"){
+if (.data_source == "202004"){
   gbif_file_path <- file.path(.wd,"gbif-data-202004",.taxa_name,"updated-files/")
   ebird_file_path <- file.path(.wd,"ebird-data-202003/updated-files/")
   wi_file_path <-   file.path(.wd,"wi-data")
 }
 
 # 2018 data dump
-if (data_source == "201810"){
+if (.data_source == "201810"){
   gbif_file_path <- file.path(.wd,"gbif-data",.taxa_name,"updated-files/")
   ebird_file_path <- file.path(.wd,"ebird-data/updated-files/")
 }
@@ -279,22 +278,22 @@ grid_national_data_summary <- summarize_grid_national_data(summary_data)
 grid_data_summary <- summarize_grid_data(summary_data)
 
 species_grid_national_data_summary <- summarize_species_grid_national_data(summary_data)
-fwrite(species_grid_national_data_summary,paste0(output_file_path,taxa_name,"_species_grid_data_summary_",data_source,".csv"))
+fwrite(species_grid_national_data_summary,paste0(output_file_path,taxa_name,"_species_grid_data_summary_",.data_source,".csv"))
 
 # find coverage!
 
 print("finding national coverage...")
 national_coverage <- find_national_coverage(pts)
-fwrite(national_coverage,paste0(output_file_path,taxa_name,"_national_coverage_",data_source,".csv"))
+fwrite(national_coverage,paste0(output_file_path,taxa_name,"_national_coverage_",.data_source,".csv"))
 
 print("finding species coverage...")
 species_coverage <- find_species_coverage(pts)
-fwrite(species_coverage,paste0(output_file_path,taxa_name,"_species_coverage_",data_source,".csv"))
+fwrite(species_coverage,paste0(output_file_path,taxa_name,"_species_coverage_",.data_source,".csv"))
 
 print("finding grid+national coverage...")
 grid_national_coverage <- find_grid_national_coverage(pts)
-fwrite(grid_national_coverage,paste0(output_file_path,taxa_name,"_grid_national_coverage_",data_source,".csv"))
+fwrite(grid_national_coverage,paste0(output_file_path,taxa_name,"_grid_national_coverage_",.data_source,".csv"))
 
 print("finding grid coverage...")
 grid_coverage <- find_grid_coverage(pts)
-fwrite(grid_coverage,paste0(output_file_path,taxa_name,"_grid_coverage_",data_source,".csv"))
+fwrite(grid_coverage,paste0(output_file_path,taxa_name,"_grid_coverage_",.data_source,".csv"))
