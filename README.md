@@ -29,6 +29,9 @@ Rework coverage workflow to support wider applications
 |2021-08-31|set up repo on farnam|
 ||extract functions from main script|
 |2021-09-01|extracted functions from main script|
+||extracted 360 grid x GADM interesection|
+||updated workflow script|
+||running intersection|
 
 
 ## notes
