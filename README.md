@@ -34,9 +34,12 @@ Rework coverage workflow to support wider applications
 ||running intersection|
 |2021-09-02|fixed bug in intersection|
 ||reran intersection|
-||test connection|
+||updated coverage workflow|
+||tested running coverage|
 
 ## workflow overview
-* workflow.sh- controls entire workflow
-  * run_intersection.sh- batch job file for 360 grid x GADM intersection
+* **workflow.sh**- controls entire workflow
+  * **run_intersection.sh**- batch job file for 360 grid x GADM intersection
+  * **run_coverage.sh** - batch job file for running coverage
+  * **run_coverage_large.sh** - batch job for larger coverage runs
 
