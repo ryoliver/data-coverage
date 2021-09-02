@@ -31,7 +31,7 @@ if(interactive()) {
   rd <- here::here
   
   # default to mammals 1950-2019
-  .outPF <- file.path('/gpfs/ysm/project/jetz/ryo3/projects/data-coverage/analysis')
+  .outPF <- file.path('/gpfs/ysm/project/jetz/ryo3/projects/data-coverage/analysis/')
   .taxa_name <- "mammals"
   .year_start <- 1950
   .year_end <- 2019
@@ -50,7 +50,7 @@ if(interactive()) {
   
   source(file.path(.wd,"projects/data-coverage/src/funs/input_parse.r"))
   
-  .outPF <- file.path('/gpfs/ysm/project/jetz/ryo3/projects/data-coverage/analysis')
+  .outPF <- file.path('/gpfs/ysm/project/jetz/ryo3/projects/data-coverage/analysis/')
   .taxa_name <- ag$taxa
   .year_start <- as.numeric(ag$year1)
   .year_end <- as.numeric(ag$year2)
@@ -151,7 +151,8 @@ country.stewardship <- species.expected %>%
   group_by(country) %>% 
   dplyr::summarise(Ecl_Ekl = sum(Eci_Eki))
 
-fwrite(country.stewardship,file.path(.outPF,.taxa_name,"_country_stewardship.csv"))
+
+fwrite(country.stewardship,paste0(.outPF,.taxa_name,"_country_stewardship.csv"))
 
 
 # rows: every country + expected species pair (expanded so there is a record for every year of the observation record)
