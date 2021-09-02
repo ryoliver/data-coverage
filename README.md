@@ -32,7 +32,10 @@ Rework coverage workflow to support wider applications
 ||extracted 360 grid x GADM interesection|
 ||updated workflow script|
 ||running intersection|
+|2021-09-02|fixed bug in intersection|
+||reran intersection|
 
 
-## notes
-* does the 360 grid x GADM intersection need to happen in each run?
+## workflow overview
+* workflow.sh controls entire workflow
+

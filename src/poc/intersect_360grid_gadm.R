@@ -132,5 +132,5 @@ fwrite(grid_gadm,file.path(.outPF,"intersection-gadm-360grid.csv"))
 
 #---- Finalize script ----#
 
-message(glue('Script complete in {diffmin(t0)} minutes'))
+message("intersection complete!")
 }
