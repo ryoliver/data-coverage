@@ -37,5 +37,6 @@ Rework coverage workflow to support wider applications
 
 
 ## workflow overview
-* workflow.sh controls entire workflow
+* workflow.sh- controls entire workflow
+  * run_intersection.sh- batch job file for 360 grid x GADM intersection
 
