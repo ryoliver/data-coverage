@@ -11,4 +11,4 @@
 
 module load R
 
-Rscript /home/ryo3/project/projects/data-coverage/src/poc/intersect_360grid_gadm.R /gpfs/ysm/scratch60/jetz/ryo3/coverage_output
+Rscript /home/ryo3/project/projects/data-coverage/src/poc/intersect_360grid_gadm.R /gpfs/ysm/project/projects/data-coverage/analysis
