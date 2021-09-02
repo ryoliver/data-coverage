@@ -34,7 +34,7 @@ Rework coverage workflow to support wider applications
 ||running intersection|
 |2021-09-02|fixed bug in intersection|
 ||reran intersection|
-
+||test connection|
 
 ## workflow overview
 * workflow.sh- controls entire workflow
