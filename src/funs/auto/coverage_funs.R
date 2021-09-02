@@ -58,7 +58,7 @@ find_species_coverage <- function(occ_data){
   expected <- expected %>% 
     ungroup(country) %>% 
     select(scientificname,year,Eki) %>%
-    expand(nesting(scientificname,Eki),year = year_start:year_end) %>%
+    expand(nesting(scientificname,Eki),year = .year_start:.year_end) %>%
     distinct(scientificname, year, .keep_all = TRUE)
   
   species <- dplyr::left_join(expected,observed,by = c("scientificname","year"))
@@ -112,7 +112,7 @@ find_grid_national_coverage <- function(occ_data){
     distinct(scientificname,.keep_all = TRUE) %>%
     group_by(hbwid,country) %>%
     summarise(Egsi = sum(Eci_Eki, na.rm = TRUE)) %>%
-    expand(nesting(hbwid,country,Egsi),year = year_start:year_end)
+    expand(nesting(hbwid,country,Egsi),year = .year_start:.year_end)
   
   
   coverage_steward <- left_join(expected.grid,observed,by = c("country","hbwid","year"))
@@ -145,7 +145,7 @@ find_grid_coverage <- function(occ_data){
     summarise(Egi = n_distinct(scientificname))
   
   grid.expected.expanded <- grid.expected %>% 
-    tidyr::expand(nesting(hbwid,Egi),year = year_start:year_end)
+    tidyr::expand(nesting(hbwid,Egi),year = .year_start:.year_end)
   
   coverage <- dplyr::left_join(grid.expected.expanded,grid.observed,by = c("hbwid","year")) 
   

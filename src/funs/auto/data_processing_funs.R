@@ -5,7 +5,7 @@
 ### processing occurrence data
 prep_occurrence_data <- function(occ_data){
   
-  occ_data <- occ_data %>% filter(year >= year_start) 
+  occ_data <- occ_data %>% filter(year >= .year_start) 
   
   # find distinct records
   print("finding distinct observations...")
@@ -51,7 +51,7 @@ prep_data_summary <- function(occ_data){
   record_summary$total <- nrow(occ_data)
   
   occ_data <- occ_data %>% 
-    filter(year >= year_start) %>%
+    filter(year >= .year_start) %>%
     distinct(scientificname,latitude,longitude,eventdate, .keep_all = TRUE) %>%
     select(scientificname,geohash,year)
   

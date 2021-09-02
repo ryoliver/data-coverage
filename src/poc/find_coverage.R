@@ -118,7 +118,7 @@ grid.expected <- grid_gadm_ranges %>%
   summarise(Egi = n_distinct(scientificname))
 
 grid.expected.expanded <- grid.expected %>% 
-  tidyr::expand(nesting(country,hbwid,Egi),year = year_start:year_end)
+  tidyr::expand(nesting(country,hbwid,Egi),year = .year_start:.year_end)
 
 ### national level
 # find number of grid cells of expected occurrence for each species in each country
@@ -129,7 +129,7 @@ country.expected <- grid_gadm_ranges %>%
   summarise(Eci = sum(prop_grid_country))
 
 country.expected.expanded <- country.expected %>% 
-  tidyr::expand(nesting(country,scientificname,Eci),year = year_start:year_end)
+  tidyr::expand(nesting(country,scientificname,Eci),year = .year_start:.year_end)
 
 # find number of grid cells of expected occurrence for each species globally
 #global.expected <- country.expected %>% group_by(scientificname) %>% dplyr::summarise(Eki = sum(Eci))
