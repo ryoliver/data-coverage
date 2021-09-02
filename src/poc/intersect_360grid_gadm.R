@@ -54,7 +54,6 @@ if (file.exists(file.path(.outPF,"intersection-gadm-360grid.csv"))){
   message("intersection already exists...")
 }else{
 
-t0 <- Sys.time()
 
 source(file.path(.wd,"projects/data-coverage/src/startup.r"))
 

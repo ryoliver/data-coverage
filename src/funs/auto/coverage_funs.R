@@ -1,5 +1,10 @@
+### functions for finding data coverage
 
-
+## national level coverage
+# ssii1 = national coverage (species-focal)
+# ssii2 = national coverage (assemblage-focal)
+# ssii3 = steward's coverage (species-focal)
+# ssii4 = steward's coverage (assemblage-focal)
 
 find_national_coverage <- function(occ_data){
   
@@ -20,18 +25,10 @@ find_national_coverage <- function(occ_data){
   
   country.species <- left_join(country.species,species_national_data_summary, by = c("country","scientificname","year"))
   country.species <- country.species %>%
-    mutate(n_records = ifelse(is.na(n_records),0,n_records),
-           n_unique = ifelse(is.na(n_unique),0,n_unique))
-  
-  country.species <- country.species %>%
-    mutate(prop_unique = n_unique/n_records)
+    mutate(n_records = ifelse(is.na(n_records),0,n_records))
   
   # write out species level coverage within nations
   fwrite(country.species,paste0(output_file_path,taxa_name,"_species_national_coverage_",data_source,".csv"))
-  
-  # replace prop unique for species with 1 record with NA so they over-inflate the national average
-  country.species <- country.species %>%
-    mutate(prop_unique = ifelse(n_records == 1,NA,prop_unique))
   
   # find national coverage values
   coverage <- country.species %>% 
@@ -40,12 +37,16 @@ find_national_coverage <- function(occ_data){
               ssii2 = sum(Oci/sum(Eci,na.rm=TRUE),na.rm=TRUE),
               ssii3 = sum(Oci_Eci*(Eci_Eki/Ecl_Ekl),na.rm=TRUE),
               ssii4 = sum(Oci*Eci_Eki/sum(Eci*Eci_Eki,na.rm = TRUE),na.rm = TRUE),
-              n_records = sum(n_records),
-              prop_unique = mean(prop_unique,na.rm =TRUE)) 
+              n_records = sum(n_records)) 
   
   return(coverage)
 }
 
+## species level coverage
+# Eki = number of expected grid cells
+# Oi = number of observed grid cells
+# ssii = data coverage
+# n_records = total number of records
 
 find_species_coverage <- function(occ_data){
   # find number of grid cells of observed occurrence for each species in each country
@@ -64,19 +65,26 @@ find_species_coverage <- function(occ_data){
   species$Oi <- species$Oi %>% replace_na(0)
   
   # find proportion of # of grid cells with observations to # of grid cells with expected occurrence for each species
-  species <- species %>% dplyr::mutate(Oi_Eki = Oi/Eki)
+  species <- species %>% 
+    dplyr::mutate(ssii = Oi/Eki)
   
   # join with species data summary
   species <- left_join(species,species_data_summary, by = c("scientificname","year"))
   
   species <- species %>%
-    mutate(n_records = ifelse(is.na(n_records),0,n_records),
-           n_unique = ifelse(is.na(n_unique),0,n_unique)) %>%
-    mutate(prop_unique = n_unique/n_records) 
+    mutate(n_records = ifelse(is.na(n_records),0,n_records)) 
   
   return(species)
 }
 
+## grid level coverage (separating grid cells by country)
+# Egi = number of expected species
+# Ogi = number of observed species
+# ssii2 = data coverage
+# Egsi = number of expected species
+# Ogsi = number of observed species
+# ssii4 = data coverage weighted by stewardship
+# n_records = total number of records
 
 find_grid_national_coverage <- function(occ_data){
   
@@ -90,7 +98,7 @@ find_grid_national_coverage <- function(occ_data){
   coverage$Ogi <- coverage$Ogi%>% replace_na(0)
   
   coverage <- coverage %>%
-    mutate(Ogi_Egi = Ogi/Egi) 
+    mutate(ssii2 = Ogi/Egi) 
   
   # assemblage-level weighted by national stewardship
   observed <- left_join(occ_data,species.expected,by = c("scientificname","country","year")) %>%
@@ -111,7 +119,7 @@ find_grid_national_coverage <- function(occ_data){
   coverage_steward$Ogsi <- coverage_steward$Ogsi%>% replace_na(0)
   
   coverage_steward  <- coverage_steward %>%
-    mutate(Ogsi_Egsi = Ogsi/Egsi) 
+    mutate(ssii4 = Ogsi/Egsi) 
   
   coverage <- left_join(coverage,coverage_steward,by = c("country","hbwid","year"))
   coverage <- left_join(coverage,grid_national_data_summary,by = c("country","hbwid","year"))
@@ -119,6 +127,11 @@ find_grid_national_coverage <- function(occ_data){
   return(coverage)
 }
 
+## grid level coverage 
+# Egi = number of expected species
+# Ogi = number of observed species
+# ssii = data coverage
+# n_records = total number of records
 
 find_grid_coverage <- function(occ_data){
   
@@ -138,7 +151,7 @@ find_grid_coverage <- function(occ_data){
   
   coverage$Ogi <- coverage$Ogi%>% replace_na(0)
   coverage <- coverage %>%
-    mutate(Ogi_Egi = Ogi/Egi) 
+    mutate(ssii = Ogi/Egi) 
   
   coverage <- left_join(coverage,grid_data_summary,by = c("hbwid","year"))
   
