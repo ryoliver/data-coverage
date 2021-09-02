@@ -128,7 +128,7 @@ grid_gadm <- dplyr::left_join(grid_gadm, grid, by = "hbwid") %>%
 #---- Save output ---#
 
 message(glue("write out file to...",.outPF))
-fwrite(grid_gadm,paste0(output_file_path,file.path(.outPF,"intersection-gadm-360grid.csv")))
+fwrite(grid_gadm,file.path(.outPF,"intersection-gadm-360grid.csv"))
 
 #---- Finalize script ----#
 
