@@ -28,7 +28,7 @@ if(interactive()) {
   .test <- TRUE
   rd <- here::here
   
-  .outPF <- file.path('/gpfs/ysm/project/projects/data-coverage/analysis')
+  .outPF <- file.path('/gpfs/ysm/project/jetz/ryo3/projects/data-coverage/analysis')
   
 } else {
   library(docopt)
