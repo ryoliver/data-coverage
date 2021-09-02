@@ -11,4 +11,4 @@
 
 module load R
 
-Rscript home/ryo3/project/projects/data-coverage/src/poc/find_coverage.R $1 $2 $3 $4
+Rscript /gpfs/ysm/project/jetz/ryo3/projects/data-coverage/src/poc/find_coverage.R $1 $2 $3 $4
