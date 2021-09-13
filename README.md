@@ -16,12 +16,15 @@ Rework coverage workflow to support wider applications
 * generate output which stores metadata
 
 ## to do:
-* separate functions from main script
-* check file paths/variable names
 * debug WI issue
 
-## activity log:
+## workflow overview
+* **workflow.sh**- controls entire workflow
+  * **run_intersection.sh**- batch job file for 360 grid x GADM intersection
+  * **run_coverage.sh** - batch job file for running coverage
+  * **run_coverage_large.sh** - batch job for larger coverage runs
 
+## activity log:
 |date|activity|
 |:-|:------------|
 |2021-08-30|create repo|
@@ -38,10 +41,3 @@ Rework coverage workflow to support wider applications
 ||tested running coverage|
 |2021-09-13|fixed bug in intersection|
 ||save off candidate geohashes|
-
-## workflow overview
-* **workflow.sh**- controls entire workflow
-  * **run_intersection.sh**- batch job file for 360 grid x GADM intersection
-  * **run_coverage.sh** - batch job file for running coverage
-  * **run_coverage_large.sh** - batch job for larger coverage runs
-
