@@ -107,6 +107,8 @@ grid_ranges <- get_intersection(.taxa_name)
 # pull GADM x 360 grid intersection
 grid_gadm <- fread(file.path(.wd,"projects/data-coverage/analysis/intersection-gadm-360grid.csv"))
 
+# pull candidate geohashes for intersection
+candidate_gh <- fread(file.path(.wd,"projects/data-coverage/analysis/intersection-gadm-360grid-candidate-geohash.csv"))
 
 ## find expected species in each grid cell
 grid_gadm_ranges <- dplyr::left_join(grid_gadm,grid_ranges,by = "hbwid") %>% filter(!is.na(scientificname))

@@ -36,6 +36,8 @@ Rework coverage workflow to support wider applications
 ||reran intersection|
 ||updated coverage workflow|
 ||tested running coverage|
+|2021-09-13|fixed bug in intersection|
+||save off candidate geohashes|
 
 ## workflow overview
 * **workflow.sh**- controls entire workflow
