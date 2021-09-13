@@ -126,7 +126,8 @@ grid_gadm <- dplyr::left_join(grid_gadm, grid, by = "hbwid") %>%
 
 #---- Save output ---#
 
-message(glue("write out file to...",.outPF))
+message(glue("write out files to...",.outPF))
+fwrite(candidate_gh,file.path(.outPF,"intersection-gadm-360grid-candidate-geohash.csv"))
 fwrite(grid_gadm,file.path(.outPF,"intersection-gadm-360grid.csv"))
 
 #---- Finalize script ----#

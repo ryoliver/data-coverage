@@ -13,7 +13,14 @@ chmod +x $src/workflow/run_coverage.sh
 chmod +x $src/workflow/run_coverage_large.sh
 
 #run intersection between 360 grid and GADM
-sbatch $src/workflow/run_intersection.sh
+FILE=/gpfs/ysm/project/jetz/ryo3/projects/data-coverage/analysis/intersection-gadm-360grid.csv
+if [ -f "$FILE" ]; then
+  echo "intersection already exists";
+else
+  echo "run intersection"
+  sbatch $src/workflow/run_intersection.sh
+fi
+
 
 #find covearge
-sbatch $src/workflow/run_coverage.sh mammals 1950 2019 202004
+#sbatch $src/workflow/run_coverage.sh mammals 1950 2019 202004
