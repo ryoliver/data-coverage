@@ -77,7 +77,7 @@ prep_data_summary <- function(occ_data){
     select(hbwid,country,scientificname,year)
   
   record_summary$valid <- nrow(occ_data)
-  fwrite(record_summary,paste0(.outPF,.taxa_name,"_record_summary_",data_source,".csv"))
+  fwrite(record_summary,paste0(.outPF,.taxa_name,"_record_summary_",.data_source,".csv"))
   
   return(occ_data)
 }
