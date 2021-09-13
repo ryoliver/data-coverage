@@ -207,24 +207,24 @@ grid_national_data_summary <- summarize_grid_national_data(summary_data)
 grid_data_summary <- summarize_grid_data(summary_data)
 
 species_grid_national_data_summary <- summarize_species_grid_national_data(summary_data)
-fwrite(species_grid_national_data_summary,paste0(output_file_path,.taxa_name,"_species_grid_data_summary_",.data_source,".csv"))
+fwrite(species_grid_national_data_summary,paste0(.outPF,.taxa_name,"_species_grid_data_summary_",.data_source,".csv"))
 
 # find coverage!
 
 message("finding national coverage...")
 national_coverage <- find_national_coverage(pts)
-fwrite(national_coverage,paste0(output_file_path,.taxa_name,"_national_coverage_",.data_source,".csv"))
+fwrite(national_coverage,paste0(.outPF,.taxa_name,"_national_coverage_",.data_source,".csv"))
 
 message("finding species coverage...")
 species_coverage <- find_species_coverage(pts)
-fwrite(species_coverage,paste0(output_file_path,.taxa_name,"_species_coverage_",.data_source,".csv"))
+fwrite(species_coverage,paste0(.outPF,.taxa_name,"_species_coverage_",.data_source,".csv"))
 
 message("finding grid+national coverage...")
 grid_national_coverage <- find_grid_national_coverage(pts)
-fwrite(grid_national_coverage,paste0(output_file_path,.taxa_name,"_grid_national_coverage_",.data_source,".csv"))
+fwrite(grid_national_coverage,paste0(.outPF,.taxa_name,"_grid_national_coverage_",.data_source,".csv"))
 
 message("finding grid coverage...")
 grid_coverage <- find_grid_coverage(pts)
-fwrite(grid_coverage,paste0(output_file_path,.taxa_name,"_grid_coverage_",.data_source,".csv"))
+fwrite(grid_coverage,paste0(.outPF,.taxa_name,"_grid_coverage_",.data_source,".csv"))
 
 message(glue("coverage complete for ",.taxa_name," ",.year_start,"-",.year_end))
