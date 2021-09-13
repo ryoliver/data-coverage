@@ -31,7 +31,7 @@ if(interactive()) {
   rd <- here::here
   
   # default to mammals 1950-2019
-  .outPF <- file.path('/gpfs/ysm/project/jetz/ryo3/projects/data-coverage/analysis/')
+  .outPF <- file.path('/gpfs/ysm/project/jetz/ryo3/projects/data-coverage/analysis/coverage-output/')
   .taxa_name <- "mammals"
   .year_start <- 1950
   .year_end <- 2019
@@ -50,7 +50,7 @@ if(interactive()) {
   
   source(file.path(.wd,"projects/data-coverage/src/funs/input_parse.r"))
   
-  .outPF <- file.path('/gpfs/ysm/project/jetz/ryo3/projects/data-coverage/analysis/')
+  .outPF <- file.path('/gpfs/ysm/project/jetz/ryo3/projects/data-coverage/analysis/coverage-output/')
   .taxa_name <- ag$taxa
   .year_start <- as.numeric(ag$year1)
   .year_end <- as.numeric(ag$year2)
