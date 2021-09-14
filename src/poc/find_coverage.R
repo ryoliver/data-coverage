@@ -54,7 +54,7 @@ if(interactive()) {
   .taxa_name <- ag$taxa
   .year_start <- as.numeric(ag$year1)
   .year_end <- as.numeric(ag$year2)
-  .data_source <- ag$dataid
+  .data_source <- "202004"
 }
 
 
@@ -79,7 +79,7 @@ message(glue("end: ",.year_end))
 if (.data_source == "202004"){
   gbif_file_path <- file.path(.wd,"gbif-data-202004",.taxa_name,"updated-files/")
   ebird_file_path <- file.path(.wd,"ebird-data-202003/updated-files/")
-  wi_file_path <-   file.path(.wd,"wi-data")
+  wi_file_path <-   file.path(.wd,"wi-data/")
 }
 
 # 2018 data dump
