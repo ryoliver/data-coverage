@@ -12,7 +12,7 @@ get_occurrence_data <- function(file_path){
     rename("scientificname" = sp_binomial,
            "year" = photo_year) 
     
-    pts_raw$geohash <- gh_encode(wi$latitude,wi$longitude,precision = 5)
+    pts_raw$geohash <- gh_encode(pts_raw$latitude,pts_raw$longitude,precision = 5)
     pts_raw$eventdate <- rep(NA,nro(pts_raw))
     
     pts_raw <- pts_raw %>%
