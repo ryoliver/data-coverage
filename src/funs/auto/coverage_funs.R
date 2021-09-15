@@ -28,7 +28,7 @@ find_national_coverage <- function(occ_data){
     mutate(n_records = ifelse(is.na(n_records),0,n_records))
   
   # write out species level coverage within nations
-  fwrite(country.species,paste0(.outPF,.taxa_name,"_species_national_coverage_",.dataset_id,.data_source,".csv"))
+  fwrite(country.species,paste0(.outPF,.taxa_name,"_species_national_coverage_",.dataset_id,"_",.data_source,".csv"))
   
   # find national coverage values
   coverage <- country.species %>% 

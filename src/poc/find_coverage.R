@@ -81,7 +81,7 @@ message(glue("end: ",.year_end))
 if (.data_source == "202004"){
   gbif_file_path <- file.path(.wd,"gbif-data-202004",.taxa_name,"updated-files/")
   ebird_file_path <- file.path(.wd,"ebird-data-202003/updated-files/")
-  wi_file_path <-   file.path(.wd,"wi-data/")
+  wi_file_path <-   file.path(.wd,"wi-data/input-files/")
 }
 
 # 2018 data dump
@@ -175,11 +175,12 @@ expected <- dplyr::left_join(species.expected,country.stewardship,by="country")
 
 # check if WI data has been processed
 # if not run processing script
-if(.dataset_id %in% c("wi","gbif-wi")){
-  if(length(list.files(wi_file_path))== 0){
-    source(file.path(.wd,"projects/data-coverage/src/poc/prep-wi-data.r"))
-  }
-}
+#if(.dataset_id %in% c("wi","gbif-wi")){
+#  if(length(list.files(wi_file_path))== 0){
+#    message("running WI data prep...")
+#    source(file.path(.wd,"projects/data-coverage/src/poc/prep-wi-data.r"))
+#  }
+#}
 
 # get occurrence data
 if(.dataset_id == "gbif"){
@@ -229,24 +230,24 @@ grid_national_data_summary <- summarize_grid_national_data(summary_data)
 grid_data_summary <- summarize_grid_data(summary_data)
 
 species_grid_national_data_summary <- summarize_species_grid_national_data(summary_data)
-fwrite(species_grid_national_data_summary,paste0(.outPF,.taxa_name,"_species_grid_data_summary_",.dataset_id,.data_source,".csv"))
+fwrite(species_grid_national_data_summary,paste0(.outPF,.taxa_name,"_species_grid_data_summary_",.dataset_id,"_",.data_source,".csv"))
 
 # find coverage!
 
 message("finding national coverage...")
 national_coverage <- find_national_coverage(pts)
-fwrite(national_coverage,paste0(.outPF,.taxa_name,"_national_coverage_",.dataset_id,.data_source,".csv"))
+fwrite(national_coverage,paste0(.outPF,.taxa_name,"_national_coverage_",.dataset_id,"_",.data_source,".csv"))
 
 message("finding species coverage...")
 species_coverage <- find_species_coverage(pts)
-fwrite(species_coverage,paste0(.outPF,.taxa_name,"_species_coverage_",.dataset_id,.data_source,".csv"))
+fwrite(species_coverage,paste0(.outPF,.taxa_name,"_species_coverage_",.dataset_id,"_",.data_source,".csv"))
 
 message("finding grid+national coverage...")
 grid_national_coverage <- find_grid_national_coverage(pts)
-fwrite(grid_national_coverage,paste0(.outPF,.taxa_name,"_grid_national_coverage_",.dataset_id,.data_source,".csv"))
+fwrite(grid_national_coverage,paste0(.outPF,.taxa_name,"_grid_national_coverage_",.dataset_id,"_",.data_source,".csv"))
 
 message("finding grid coverage...")
 grid_coverage <- find_grid_coverage(pts)
-fwrite(grid_coverage,paste0(.outPF,.taxa_name,"_grid_coverage_",.dataset_id,.data_source,".csv"))
+fwrite(grid_coverage,paste0(.outPF,.taxa_name,"_grid_coverage_",.dataset_id,"_",.data_source,".csv"))
 
 message(glue("coverage complete for ",.taxa_name," ",.year_start,"-",.year_end))

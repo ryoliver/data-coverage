@@ -50,10 +50,12 @@ prep_data_summary <- function(occ_data){
   record_summary <- data.frame("total" = c(0), "no_dups" = c(0), "valid" = c(0))
   record_summary$total <- nrow(occ_data)
   
-  occ_data <- occ_data %>% 
-    filter(year >= .year_start) %>%
-    distinct(scientificname,latitude,longitude,eventdate, .keep_all = TRUE) %>%
-    select(scientificname,geohash,year)
+  #CURRENTLY NOT REMOVING DUPLICATE RECORDS
+  print("WARNING! currently not removing duplicate records")
+  #occ_data <- occ_data %>% 
+  #  filter(year >= .year_start) %>%
+  #  distinct(scientificname,latitude,longitude,eventdate, .keep_all = TRUE) %>%
+  #  select(scientificname,geohash,year)
   
   record_summary$no_dups <- nrow(occ_data)
   
@@ -77,7 +79,7 @@ prep_data_summary <- function(occ_data){
     select(hbwid,country,scientificname,year)
   
   record_summary$valid <- nrow(occ_data)
-  fwrite(record_summary,paste0(.outPF,.taxa_name,"_record_summary_",.data_source,".csv"))
+  fwrite(record_summary,paste0(.outPF,.taxa_name,"_record_summary_",.dataset_id,"_",.data_source,".csv"))
   
   return(occ_data)
 }
