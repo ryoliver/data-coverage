@@ -9,7 +9,7 @@ get_occurrence_data <- function(file_path){
     library(geohashTools)
     
     pts_raw$geohash <- gh_encode(pts_raw$latitude,pts_raw$longitude,precision = 5)
-    pts_raw$eventdate <- rep(NA,nrow(pts_raw))
+    pts_raw$eventdate <- as.Date(rep(NA,nrow(pts_raw)))
     
     pts_raw <- pts_raw %>%
       rename("scientificname" = sp_binomial,
