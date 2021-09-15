@@ -36,6 +36,7 @@ if(interactive()) {
   .year_start <- 1950
   .year_end <- 2019
   .data_source <- "202004"
+  .dataset_id <- "gbif"
 
 } else {
   library(docopt)
@@ -55,6 +56,7 @@ if(interactive()) {
   .year_start <- as.numeric(ag$year1)
   .year_end <- as.numeric(ag$year2)
   .data_source <- "202004"
+  .dataset_id <- ag$dataid
 }
 
 
@@ -171,27 +173,47 @@ expected <- dplyr::left_join(species.expected,country.stewardship,by="country")
 ### observations
 ##################################################
 
-if (.taxa_name == "birds"){
-  gbif <- get_occurrence_data(gbif_file_path)
-  gbif_clean <- prep_occurrence_data(gbif)
-  
-  ebird <- get_occurrence_data(ebird_file_path)
-  ebird_clean <- prep_occurrence_data(ebird)
-  
-  message("combining datasets...")
-  pts <- rbind(gbif_clean,ebird_clean)
-  
-  #gbif <- gbif %>% select(scientificname,latitude,longitude,eventDate,geohash,year)
-  #ebird <- ebird %>% select(scientificname,geohash,year)
-  
-  colnames(gbif) <- tolower(colnames(gbif))
-  colnames(ebird) <- tolower(colnames(ebird))
-  
-  pts_raw <- rbind(gbif,ebird)
-}else{
-  pts_raw <- get_occurrence_data(gbif_file_path)
-  pts <- prep_occurrence_data(pts_raw)
+# check if WI data has been processed
+# if not run processing script
+if(.dataset_id %in% c("wi","gbif-wi")){
+  if(length(list.files(wi_file_path))== 0){
+    source(file.path(.wd,"projects/data-coverage/src/poc/prep-wi-data.r"))
+  }
 }
+
+# get occurrence data
+if(.dataset_id == "gbif"){
+  if (.taxa_name == "birds"){
+    gbif <- get_occurrence_data(gbif_file_path)
+    ebird <- get_occurrence_data(ebird_file_path)
+    
+    pts_raw <- rbind(gbif,ebird)
+    pts <- prep_occurrence_data(pts_raw)
+  }else{
+    pts_raw <- get_occurrence_data(gbif_file_path)
+    pts <- prep_occurrence_data(pts_raw)
+  }
+} 
+if(.dataset_id == "wi"){
+  pts_raw <- get_occurrence_data(wi_file_path)
+} 
+if(.dataset_id == "gbif-wi"){
+  if (.taxa_name == "birds"){
+    gbif <- get_occurrence_data(gbif_file_path)
+    ebird <- get_occurrence_data(ebird_file_path)
+    wi <- get_occurrence_data(wi_file_path)
+    
+    pts_raw <- rbind(gbif,ebird,wi)
+    pts <- prep_occurrence_data(pts_raw)
+  }else{
+    gbif <- get_occurrence_data(gbif_file_path)
+    wi <- get_occurrence_data(wi_file_path)
+    
+    pts_raw <- rbind(gbif,wi)
+    pts <- prep_occurrence_data(pts_raw)
+  }
+}
+
 
 
 ##################################################
@@ -207,24 +229,24 @@ grid_national_data_summary <- summarize_grid_national_data(summary_data)
 grid_data_summary <- summarize_grid_data(summary_data)
 
 species_grid_national_data_summary <- summarize_species_grid_national_data(summary_data)
-fwrite(species_grid_national_data_summary,paste0(.outPF,.taxa_name,"_species_grid_data_summary_",.data_source,".csv"))
+fwrite(species_grid_national_data_summary,paste0(.outPF,.taxa_name,"_species_grid_data_summary_",.dataset_id,.data_source,".csv"))
 
 # find coverage!
 
 message("finding national coverage...")
 national_coverage <- find_national_coverage(pts)
-fwrite(national_coverage,paste0(.outPF,.taxa_name,"_national_coverage_",.data_source,".csv"))
+fwrite(national_coverage,paste0(.outPF,.taxa_name,"_national_coverage_",.dataset_id,.data_source,".csv"))
 
 message("finding species coverage...")
 species_coverage <- find_species_coverage(pts)
-fwrite(species_coverage,paste0(.outPF,.taxa_name,"_species_coverage_",.data_source,".csv"))
+fwrite(species_coverage,paste0(.outPF,.taxa_name,"_species_coverage_",.dataset_id,.data_source,".csv"))
 
 message("finding grid+national coverage...")
 grid_national_coverage <- find_grid_national_coverage(pts)
-fwrite(grid_national_coverage,paste0(.outPF,.taxa_name,"_grid_national_coverage_",.data_source,".csv"))
+fwrite(grid_national_coverage,paste0(.outPF,.taxa_name,"_grid_national_coverage_",.dataset_id,.data_source,".csv"))
 
 message("finding grid coverage...")
 grid_coverage <- find_grid_coverage(pts)
-fwrite(grid_coverage,paste0(.outPF,.taxa_name,"_grid_coverage_",.data_source,".csv"))
+fwrite(grid_coverage,paste0(.outPF,.taxa_name,"_grid_coverage_",.dataset_id,.data_source,".csv"))
 
 message(glue("coverage complete for ",.taxa_name," ",.year_start,"-",.year_end))

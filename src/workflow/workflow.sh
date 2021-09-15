@@ -20,4 +20,4 @@ fi
 
 
 #find covearge
-sbatch $src/workflow/run_coverage.sh mammals 1950 2019 202004
+sbatch $src/workflow/run_coverage.sh mammals 1950 2019 gbif-wi
