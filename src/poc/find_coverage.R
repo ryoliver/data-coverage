@@ -36,7 +36,7 @@ if(interactive()) {
   .year_start <- 1950
   .year_end <- 2019
   .data_source <- "202004"
-  .dataset_id <- "gbif"
+  .dataset_id <- "gbif-wi"
 
 } else {
   library(docopt)
