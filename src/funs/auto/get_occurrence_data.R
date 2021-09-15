@@ -8,10 +8,6 @@ get_occurrence_data <- function(file_path){
   if(file_path == wi_file_path){
     library(geohashTools)
     
-    pts_raw <- pts_raw %>%
-    rename("scientificname" = sp_binomial,
-           "year" = photo_year) 
-    
     pts_raw$geohash <- gh_encode(pts_raw$latitude,pts_raw$longitude,precision = 5)
     pts_raw$eventdate <- rep(NA,nrow(pts_raw))
     
