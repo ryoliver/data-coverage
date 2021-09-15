@@ -22,9 +22,19 @@ Rework coverage workflow to support wider applications
 * **workflow.sh**- controls entire workflow
   * **run_intersection.sh**- batch job file for 360 grid x GADM intersection
     * runs **intersect_360grid_gadm.R**
+      * intersects 360 grid with GADM based on geohashes and saves output
   * **run_coverage.sh** - batch job file for running coverage
     * runs **find_coverage.R**
   * **run_coverage_large.sh** - batch job for larger coverage runs
+* **find_coverage.R** - primary script for running coverage
+  * **prep_taxonomy.R** - converts synonym list format
+  * **get_intersection.R** - pulls intersection between 360 grid and expert ranges
+  * **prep_wi_data.R** - check if WI data has been processed and if not rerun
+    * obsolete?
+  * **get_occurrence_data.R** - pull point occurrence data
+  * **summary_funs.R** - functions for summarizing data records at different resolutions
+  * **coverage_funs.R** - functions for computing coverage
+  
 
 ## activity log:
 |date|activity|
@@ -45,5 +55,10 @@ Rework coverage workflow to support wider applications
 ||save off candidate geohashes|
 ||fixed hidden variable bugs|
 ||successful run!|
+|2021-09-15|added flexibility for different point datasets|
+||moved wi data prep to workflow|
+||test run on gbif+wi for mammals|
+||debugged issue joining gbif + wi|
+||submitted run to test|
 
 
