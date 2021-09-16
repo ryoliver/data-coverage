@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --job-name=coverage
+#SBATCH --job-name=coverage_large
 #SBATCH --cpus-per-task=1
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=ruth.oliver@yale.edu
