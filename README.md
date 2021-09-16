@@ -16,7 +16,7 @@ Rework coverage workflow to support wider applications
 * generate output which stores metadata
 
 ## to do:
-* debug WI issue
+
 
 ## workflow overview
 * **workflow.sh**- controls entire workflow
@@ -60,5 +60,8 @@ Rework coverage workflow to support wider applications
 ||test run on gbif+wi for mammals|
 ||debugged issue joining gbif + wi|
 ||submitted run to test|
+|2021-09-16|successful run for mammals|
+||memory issue for birds|
+||need to look at output|
 
 
