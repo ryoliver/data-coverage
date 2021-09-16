@@ -72,7 +72,7 @@ list.files(file.path(.wd,"projects/data-coverage/src/funs/auto"),full.names=TRUE
 message(glue("taxa: ",.taxa_name))
 message(glue("start: ",.year_start))
 message(glue("end: ",.year_end))
-
+message(glue("dataset: ",.dataset_id))
 
 ##################################################
 ### occurrence data source

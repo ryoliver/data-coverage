@@ -8,11 +8,11 @@ prep_occurrence_data <- function(occ_data){
   occ_data <- occ_data %>% filter(year >= .year_start) 
   
   # find distinct records
-  print("finding distinct observations...")
+  message("finding distinct observations...")
   occ_data <- occ_data %>% distinct(scientificname,geohash,year,.keep_all = TRUE)
   
   # join observations with synonym list
-  print("joining with synonym list...")
+  message("joining with synonym list...")
   occ_syn_join=dplyr::left_join(occ_data,synlist,by=c("scientificname"="Synonym"))
   
   # filter out observations without synonym match or date
@@ -21,7 +21,7 @@ prep_occurrence_data <- function(occ_data){
     rename("scientificname" = "Accepted") %>%
     distinct(scientificname,year,geohash)
   
-  print("joining observations with 360 grid x GADM...")
+  message("joining observations with 360 grid x GADM...")
   #grid_gadm_occ <-  dplyr::left_join(grid_gadm_join,occ_data,by="geohash") %>%
   #filter(!is.na(scientificname)) %>%
   #distinct(hbwid,country,scientificname,year)
@@ -34,7 +34,7 @@ prep_occurrence_data <- function(occ_data){
     distinct(hbwid,country,scientificname,year)
   
   # join with expected grid cells to restrict observations only within ranges
-  print("filtering to observations within range...")
+  message("filtering to observations within range...")
   range_obs_join <- dplyr::left_join(grid_gadm_ranges,grid_gadm_occ,by=c("hbwid","country","scientificname"))
   occ_data <- range_obs_join %>% 
     filter(!is.na(year)) %>%
@@ -51,7 +51,7 @@ prep_data_summary <- function(occ_data){
   record_summary$total <- nrow(occ_data)
   
   #CURRENTLY NOT REMOVING DUPLICATE RECORDS
-  print("WARNING! currently not removing duplicate records")
+  message("WARNING! currently not removing duplicate records")
   #occ_data <- occ_data %>% 
   #  filter(year >= .year_start) %>%
   #  distinct(scientificname,latitude,longitude,eventdate, .keep_all = TRUE) %>%
