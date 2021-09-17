@@ -271,4 +271,4 @@ message("finding grid coverage...")
 grid_coverage <- find_grid_coverage(pts)
 fwrite(grid_coverage,paste0(.outPF,.taxa_name,"_grid_coverage_",.dataset_id,"_",.data_source,".csv"))
 
-message(glue("coverage complete for ",.taxa_name," ",.year_start,"-",.year_end))
+message(glue("coverage complete for ",.taxa_name," ",.year_start,"-",.year_end, " using ",.dataset_id))

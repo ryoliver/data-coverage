@@ -16,7 +16,7 @@ Rework coverage workflow to support wider applications
 * generate output which stores metadata
 
 ## to do:
-
+* sort out issue with birds -- just memory?
 
 ## workflow overview
 * **workflow.sh**- controls entire workflow
@@ -29,8 +29,6 @@ Rework coverage workflow to support wider applications
 * **find_coverage.R** - primary script for running coverage
   * **prep_taxonomy.R** - converts synonym list format
   * **get_intersection.R** - pulls intersection between 360 grid and expert ranges
-  * **prep_wi_data.R** - check if WI data has been processed and if not rerun
-    * obsolete?
   * **get_occurrence_data.R** - pull point occurrence data
   * **summary_funs.R** - functions for summarizing data records at different resolutions
   * **coverage_funs.R** - functions for computing coverage
@@ -63,5 +61,6 @@ Rework coverage workflow to support wider applications
 |2021-09-16|successful run for mammals|
 ||memory issue for birds|
 ||need to look at output|
+|2021-09-17|issue running birds|
 
 
