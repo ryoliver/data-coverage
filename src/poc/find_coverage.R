@@ -32,11 +32,11 @@ if(interactive()) {
   
   # default to mammals 1950-2019
   .outPF <- file.path('/gpfs/ysm/project/jetz/ryo3/projects/data-coverage/analysis/coverage-output/')
-  .taxa_name <- "mammals"
+  .taxa_name <- "birds"
   .year_start <- 1950
   .year_end <- 2019
   .data_source <- "202004"
-  .dataset_id <- "gbif-wi"
+  .dataset_id <- "gbif"
 
 } else {
   library(docopt)
@@ -113,7 +113,8 @@ grid_gadm <- fread(file.path(.wd,"projects/data-coverage/analysis/intersection-g
 candidate_gh <- fread(file.path(.wd,"projects/data-coverage/analysis/intersection-gadm-360grid-candidate-geohash.csv"))
 
 ## find expected species in each grid cell
-grid_gadm_ranges <- dplyr::left_join(grid_gadm,grid_ranges,by = "hbwid") %>% filter(!is.na(scientificname))
+grid_gadm_ranges <- dplyr::left_join(grid_gadm,grid_ranges,by = "hbwid") %>% 
+  filter(!is.na(scientificname))
 
 ### grid level
 # find number of species expected in each grid cell in each country
@@ -173,44 +174,64 @@ expected <- dplyr::left_join(species.expected,country.stewardship,by="country")
 ### observations
 ##################################################
 
-# check if WI data has been processed
-# if not run processing script
-#if(.dataset_id %in% c("wi","gbif-wi")){
-#  if(length(list.files(wi_file_path))== 0){
-#    message("running WI data prep...")
-#    source(file.path(.wd,"projects/data-coverage/src/poc/prep-wi-data.r"))
-#  }
-#}
+
 
 # get occurrence data
 if(.dataset_id == "gbif"){
   if (.taxa_name == "birds"){
+    message("reading in GBIF data...")
     gbif <- get_occurrence_data(gbif_file_path)
+    
+    message("reading in eBird data...")
     ebird <- get_occurrence_data(ebird_file_path)
     
+    message("combining GBIF and eBird data...")
     pts_raw <- rbind(gbif,ebird)
+    
+    message("cleaning occurrence data...")
     pts <- prep_occurrence_data(pts_raw)
   }else{
+    message("reading in GBIF data...")
     pts_raw <- get_occurrence_data(gbif_file_path)
+    
+    message("cleaning occurrence data...")
     pts <- prep_occurrence_data(pts_raw)
   }
 } 
-if(.dataset_id == "wi"){
+if(.dataset_id == "wi"){  
+  message("reading in WI data...")
   pts_raw <- get_occurrence_data(wi_file_path)
+  
+  message("cleaning occurrence data...")
+  pts <- prep_occurrence_data(pts_raw)
 } 
 if(.dataset_id == "gbif-wi"){
   if (.taxa_name == "birds"){
+    message("reading in GBIF data...")
     gbif <- get_occurrence_data(gbif_file_path)
+    
+    message("reading in eBird data...")
     ebird <- get_occurrence_data(ebird_file_path)
+    
+    message("reading in WI data...")
     wi <- get_occurrence_data(wi_file_path)
     
+    message("combining GBIF, eBird, and WI data...")
     pts_raw <- rbind(gbif,ebird,wi)
+    
+    message("cleaning occurrence data...")
     pts <- prep_occurrence_data(pts_raw)
   }else{
+    message("reading in GBIF data...")
     gbif <- get_occurrence_data(gbif_file_path)
+    
+    message("reading in WI data...")
     wi <- get_occurrence_data(wi_file_path)
     
+    message("combining GBIF and WI data...")
     pts_raw <- rbind(gbif,wi)
+    
+    message("cleaning occurrence data...")
     pts <- prep_occurrence_data(pts_raw)
   }
 }

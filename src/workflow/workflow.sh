@@ -23,6 +23,6 @@ fi
 #sbatch $src/workflow/run_coverage.sh mammals 1950 2019 gbif-wi
 #sbatch $src/workflow/run_coverage.sh mammals 1950 2019 gbif
 
-sbatch $src/workflow/run_coverage_large.sh birds 1950 2019 gbif-wi
+#sbatch $src/workflow/run_coverage_large.sh birds 1950 2019 gbif-wi
 sbatch $src/workflow/run_coverage_large.sh birds 1950 2019 gbif
 
