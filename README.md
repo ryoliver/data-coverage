@@ -63,5 +63,7 @@ Rework coverage workflow to support wider applications
 ||need to look at output|
 |2021-09-17|issue running birds|
 ||still debugging...|
+|2021-10-12|trying to rerun birds|
+
 
 
