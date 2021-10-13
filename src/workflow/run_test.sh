@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --job-name=coverage_large
+#SBATCH --job-name=test
 #SBATCH --cpus-per-task=1
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=ruth.oliver@yale.edu
@@ -11,4 +11,4 @@
 
 module load R
 
-Rscript /gpfs/ysm/project/jetz/ryo3/projects/data-coverage/src/poc/find_coverage.R $1 $2 $3 $4
+Rscript /gpfs/ysm/project/jetz/ryo3/projects/data-coverage/src/poc/test_file_read.R $1 $2 $3 $4
