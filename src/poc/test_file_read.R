@@ -102,7 +102,7 @@ grid_ranges <- get_intersection(.taxa_name)
 
 ##################################################
 
-if (taxa_name == "birds"){
+if (.taxa_name == "birds"){
   
   file_path <- gbif_file_path
   # read in files
