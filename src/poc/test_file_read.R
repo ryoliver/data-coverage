@@ -117,8 +117,8 @@ if (.taxa_name == "birds"){
   print(end - start)
   print(paste0("number of GBIF records: ",nrow(gbif)/1000000,"M"))
   
-  print("prep GBIF observations...")
-  gbif_clean <- prep_occurrence_data(gbif)
+  #print("prep GBIF observations...")
+  #gbif_clean <- prep_occurrence_data(gbif)
   
   # ebird data
   file_path <- ebird_file_path
@@ -133,11 +133,11 @@ if (.taxa_name == "birds"){
   print(end - start)
   print(paste0("number of eBird records: ",nrow(ebird)/1000000,"M"))
   
-  print("prep eBird observations...")
-  ebird_clean <- prep_occurrence_data(ebird)
+  #print("prep eBird observations...")
+  #ebird_clean <- prep_occurrence_data(ebird)
   
-  print("combining datasets...")
-  pts <- rbind(gbif_clean,ebird_clean)
+  #print("combining datasets...")
+  #pts <- rbind(gbif_clean,ebird_clean)
   
   #gbif <- gbif %>% select(scientificname,latitude,longitude,eventDate,geohash,year)
   #ebird <- ebird %>% select(scientificname,geohash,year)
