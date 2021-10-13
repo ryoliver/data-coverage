@@ -179,11 +179,38 @@ expected <- dplyr::left_join(species.expected,country.stewardship,by="country")
 # get occurrence data
 if(.dataset_id == "gbif"){
   if (.taxa_name == "birds"){
-    message("reading in GBIF data...")
-    gbif <- get_occurrence_data(gbif_file_path)
     
-    message("reading in eBird data...")
-    ebird <- get_occurrence_data(ebird_file_path)
+    file_path <- gbif_file_path
+    # read in files
+    setwd(file_path)
+    files <- list.files(file_path,pattern = "*.csv",full.names = FALSE)
+    
+    message("reading in GBIF observations...")
+    gbif = data.table::rbindlist(lapply(files, data.table::fread),use.names = TRUE)
+    print(paste0("number of GBIF records: ",nrow(gbif)/1000000,"M"))
+    
+
+    file_path <- ebird_file_path
+    setwd(file_path)
+    files <- list.files(file_path,pattern = "*.csv",full.names = FALSE)
+    
+    message("reading in eBird observations...")
+    ebird = data.table::rbindlist(lapply(files, data.table::fread),use.names = TRUE)
+    
+    message("checking column names...")
+    colnames(gbif) <- tolower(colnames(gbif))
+    colnames(ebird) <- tolower(colnames(ebird))
+    
+    message("cchecking date format...")
+    gbif$eventdate <- as.character(gbif$eventdate)
+    ebird$eventdate <- as.character(ebird$eventdate)
+  
+
+    #message("reading in GBIF data...")
+    #gbif <- get_occurrence_data(gbif_file_path)
+    
+    #message("reading in eBird data...")
+    #ebird <- get_occurrence_data(ebird_file_path)
     
     message("combining GBIF and eBird data...")
     pts_raw <- rbind(gbif,ebird)
