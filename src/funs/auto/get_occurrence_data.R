@@ -2,9 +2,15 @@ get_occurrence_data <- function(file_path){
   setwd(file_path)
   files <- list.files(file_path,pattern = "*.csv",full.names = FALSE)
   
+  message("reading in files...")
   pts_raw = data.table::rbindlist(lapply(files, data.table::fread),use.names = TRUE)
+  
+  message("check column names...")
   colnames(pts_raw) <- tolower(colnames(pts_raw))
+  
+  message("check data format...")
   pts_raw$eventdate <- as.character(pts_raw$eventdate)
+  
   if(file_path == wi_file_path){
     library(geohashTools)
     
