@@ -201,9 +201,9 @@ if(.dataset_id == "gbif"){
     colnames(gbif) <- tolower(colnames(gbif))
     colnames(ebird) <- tolower(colnames(ebird))
     
-    message("cchecking date format...")
-    gbif$eventdate <- as.character(gbif$eventdate)
-    ebird$eventdate <- as.character(ebird$eventdate)
+    #message("checking date format...")
+    #gbif$eventdate <- as.character(gbif$eventdate)
+    #ebird$eventdate <- as.character(ebird$eventdate)
   
 
     #message("reading in GBIF data...")

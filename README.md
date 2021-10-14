@@ -64,6 +64,12 @@ Rework coverage workflow to support wider applications
 |2021-09-17|issue running birds|
 ||still debugging...|
 |2021-10-12|trying to rerun birds|
+|2021-10-13|still debugging birds...|
+||seems like data read in works in main script|
+|2021-10-14|looks like the issue is with changing date format|
+
+
+
 
 
 
