@@ -187,8 +187,7 @@ if(.dataset_id == "gbif"){
     
     message("reading in GBIF observations...")
     gbif = data.table::rbindlist(lapply(files, data.table::fread),use.names = TRUE)
-    print(paste0("number of GBIF records: ",nrow(gbif)/1000000,"M"))
-    
+    message(glue(nrow(gbif)," GBIF records"))
 
     file_path <- ebird_file_path
     setwd(file_path)
@@ -196,6 +195,8 @@ if(.dataset_id == "gbif"){
     
     message("reading in eBird observations...")
     ebird = data.table::rbindlist(lapply(files, data.table::fread),use.names = TRUE)
+    message(glue(nrow(ebird)," eBird records"))
+    
     
     message("checking column names...")
     colnames(gbif) <- tolower(colnames(gbif))
@@ -214,6 +215,9 @@ if(.dataset_id == "gbif"){
     
     message("combining GBIF and eBird data...")
     pts_raw <- rbind(gbif,ebird)
+    
+    message(glue(nrow(pts_raw)," total records"))
+    
     
     message("cleaning occurrence data...")
     pts <- prep_occurrence_data(pts_raw)

@@ -67,6 +67,10 @@ Rework coverage workflow to support wider applications
 |2021-10-13|still debugging birds...|
 ||seems like data read in works in main script|
 |2021-10-14|looks like the issue is with changing date format|
+|2021-10-18|still debugging birds...|
+||failed in prep_occurrence_data|
+||try without keep=TRUE|
+
 
 
 

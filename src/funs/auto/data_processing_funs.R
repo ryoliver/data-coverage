@@ -9,7 +9,9 @@ prep_occurrence_data <- function(occ_data){
   
   # find distinct records
   message("finding distinct observations...")
-  occ_data <- occ_data %>% distinct(scientificname,geohash,year,.keep_all = TRUE)
+  #occ_data <- occ_data %>% distinct(scientificname,geohash,year,.keep_all = TRUE)
+  occ_data <- occ_data %>% distinct(scientificname,geohash,year)
+  
   
   # join observations with synonym list
   message("joining with synonym list...")
