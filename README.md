@@ -70,6 +70,7 @@ Rework coverage workflow to support wider applications
 |2021-10-18|still debugging birds...|
 ||failed in prep_occurrence_data|
 ||try without keep=TRUE|
+||try without distinct|
 
 
 
