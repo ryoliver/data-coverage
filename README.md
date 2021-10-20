@@ -71,6 +71,12 @@ Rework coverage workflow to support wider applications
 ||failed in prep_occurrence_data|
 ||try without keep=TRUE|
 ||try without distinct|
+|2021-10-20|still debugging birds...|
+||failed during synonym list join|
+||Internal error in `dict_hash_with()`: Dictionary is full.|
+||old version failed, emailed crc|
+
+
 
 
 
