@@ -9,6 +9,6 @@
 #SBATCH --partition=general,bigmem,pi_jetz
 #SBATCH -C avx2
 
-module load R
+module load R/3.6.1-foss-2018b
 
 Rscript /gpfs/ysm/project/jetz/ryo3/projects/data-coverage/src/poc/find_coverage.R $1 $2 $3 $4
