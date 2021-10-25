@@ -180,47 +180,23 @@ expected <- dplyr::left_join(species.expected,country.stewardship,by="country")
 if(.dataset_id == "gbif"){
   if (.taxa_name == "birds"){
     
-    file_path <- gbif_file_path
-    # read in files
-    setwd(file_path)
-    files <- list.files(file_path,pattern = "*.csv",full.names = FALSE)
+    message("get GBIF data...")
+    gbif <- get_occurrence_data(gbif_file_path)
     
-    message("reading in GBIF observations...")
-    gbif = data.table::rbindlist(lapply(files, data.table::fread),use.names = TRUE)
-    message(glue(nrow(gbif)," GBIF records"))
-
-    file_path <- ebird_file_path
-    setwd(file_path)
-    files <- list.files(file_path,pattern = "*.csv",full.names = FALSE)
+    message("prep GBIF data...")
+    gbif_clean <- prep_occurrence_data(gbif)
     
-    message("reading in eBird observations...")
-    ebird = data.table::rbindlist(lapply(files, data.table::fread),use.names = TRUE)
-    message(glue(nrow(ebird)," eBird records"))
+    message("get eBird data...")
+    ebird <- get_occurrence_data(ebird_file_path)
     
-    
-    message("checking column names...")
-    colnames(gbif) <- tolower(colnames(gbif))
-    colnames(ebird) <- tolower(colnames(ebird))
-    
-    #message("checking date format...")
-    #gbif$eventdate <- as.character(gbif$eventdate)
-    #ebird$eventdate <- as.character(ebird$eventdate)
-  
-
-    #message("reading in GBIF data...")
-    #gbif <- get_occurrence_data(gbif_file_path)
-    
-    #message("reading in eBird data...")
-    #ebird <- get_occurrence_data(ebird_file_path)
+    message("prep eBird data...")
+    ebird_clean <- prep_occurrence_data(ebird)
     
     message("combining GBIF and eBird data...")
     pts_raw <- rbind(gbif,ebird)
-    
-    message(glue(nrow(pts_raw)," total records"))
-    
-    
-    message("cleaning occurrence data...")
-    pts <- prep_occurrence_data(pts_raw)
+
+    message("combining prepped GBIF and eBird data...")
+    pts <- rbind(gbif_clean,ebird_clean)
   }else{
     message("reading in GBIF data...")
     pts_raw <- get_occurrence_data(gbif_file_path)
