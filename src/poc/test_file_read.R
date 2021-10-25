@@ -104,46 +104,16 @@ grid_ranges <- get_intersection(.taxa_name)
 
 if (.taxa_name == "birds"){
   
-  file_path <- gbif_file_path
-  # read in files
-  setwd(file_path)
-  files <- list.files(file_path,pattern = "*.csv",full.names = FALSE)
+  message("get GBIF data...")
+  gbif <- get_occurrence_data(gbif_file_path)
   
-  print("reading in GBIF observations:")
-  start <- Sys.time()
-  gbif = data.table::rbindlist(lapply(files, data.table::fread),use.names = TRUE)
-  end <- Sys.time()
-  print("reading in GBIF observations:")
-  print(end - start)
-  print(paste0("number of GBIF records: ",nrow(gbif)/1000000,"M"))
+  message("prep GBIF data...")
+  gbif_clean <- prep_occurrence_data(gbif)
   
-  #print("prep GBIF observations...")
-  #gbif_clean <- prep_occurrence_data(gbif)
+  message("get eBird data...")
+  ebird <- get_occurrence_data(ebird_file_path)
   
-  # ebird data
-  file_path <- ebird_file_path
-  setwd(file_path)
-  files <- list.files(file_path,pattern = "*.csv",full.names = FALSE)
+  message("prep GBIF data...")
+  ebird_clean <- prep_occurrence_data(ebird)
   
-  print("reading in eBird observations:")
-  start <- Sys.time()
-  ebird = data.table::rbindlist(lapply(files, data.table::fread),use.names = TRUE)
-  end <- Sys.time()
-  print("reading in eBird observations:")
-  print(end - start)
-  print(paste0("number of eBird records: ",nrow(ebird)/1000000,"M"))
-  
-  #print("prep eBird observations...")
-  #ebird_clean <- prep_occurrence_data(ebird)
-  
-  #print("combining datasets...")
-  #pts <- rbind(gbif_clean,ebird_clean)
-  
-  #gbif <- gbif %>% select(scientificname,latitude,longitude,eventDate,geohash,year)
-  #ebird <- ebird %>% select(scientificname,geohash,year)
-  
-  colnames(gbif) <- tolower(colnames(gbif))
-  colnames(ebird) <- tolower(colnames(ebird))
-  
-  pts_raw <- rbind(gbif,ebird)
 }

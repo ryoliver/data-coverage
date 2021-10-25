@@ -9,7 +9,7 @@ prep_occurrence_data <- function(occ_data){
   
   # find distinct records
   message("finding distinct observations...")
-  #occ_data <- occ_data %>% distinct(scientificname,geohash,year,.keep_all = TRUE)
+  occ_data <- occ_data %>% distinct(scientificname,geohash,year,.keep_all = TRUE)
 
   
   # join observations with synonym list
@@ -17,16 +17,13 @@ prep_occurrence_data <- function(occ_data){
   occ_syn_join=dplyr::left_join(occ_data,synlist,by=c("scientificname"="Synonym"))
   
   # filter out observations without synonym match or date
+  message("harmonizing with synonym list...")
   occ_data <- occ_syn_join %>% filter(!is.na(Accepted)) %>% 
     select(year,Accepted,geohash) %>%
     rename("scientificname" = "Accepted") %>%
     distinct(scientificname,year,geohash)
   
   message("joining observations with 360 grid x GADM...")
-  #grid_gadm_occ <-  dplyr::left_join(grid_gadm_join,occ_data,by="geohash") %>%
-  #filter(!is.na(scientificname)) %>%
-  #distinct(hbwid,country,scientificname,year)
-  
   # filter to just geohashes where intersection could be confirmed
   # more conservative than approach above
   grid_gadm_occ <- left_join(occ_data,candidate_gh, by = "geohash") %>%
