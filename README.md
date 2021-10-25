@@ -75,7 +75,8 @@ Rework coverage workflow to support wider applications
 ||failed during synonym list join|
 ||Internal error in `dict_hash_with()`: Dictionary is full.|
 ||old version failed, emailed crc|
-
+|2021-10-25|still debugging birds...|
+||appears to be working handling gbif and ebird separately|
 
 
 
