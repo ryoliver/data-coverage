@@ -214,20 +214,29 @@ if(.dataset_id == "wi"){
 } 
 if(.dataset_id == "gbif-wi"){
   if (.taxa_name == "birds"){
-    message("reading in GBIF data...")
+    message("get GBIF data...")
     gbif <- get_occurrence_data(gbif_file_path)
     
-    message("reading in eBird data...")
+    message("prep GBIF data...")
+    gbif_clean <- prep_occurrence_data(gbif)
+    
+    message("get eBird data...")
     ebird <- get_occurrence_data(ebird_file_path)
     
-    message("reading in WI data...")
+    message("prep eBird data...")
+    ebird_clean <- prep_occurrence_data(ebird)
+    
+    message("get WI data...")
     wi <- get_occurrence_data(wi_file_path)
+    
+    message("prep WI data...")
+    wi_clean <- prep_occurrence_data(wi)
     
     message("combining GBIF, eBird, and WI data...")
     pts_raw <- rbind(gbif,ebird,wi)
     
-    message("cleaning occurrence data...")
-    pts <- prep_occurrence_data(pts_raw)
+    message("combining prepped GBIF, eBird, and WI data...")
+    pts <- rbind(gbif_clean,ebird_clean,wi_clean)
   }else{
     message("reading in GBIF data...")
     gbif <- get_occurrence_data(gbif_file_path)
@@ -248,6 +257,7 @@ if(.dataset_id == "gbif-wi"){
 ##################################################
 ### find coverage
 # prep occurrence data for summaries
+message("prep data summaries...")
 summary_data <- prep_data_summary(pts_raw)
 
 # compute data summaries
