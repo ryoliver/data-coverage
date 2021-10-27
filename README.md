@@ -77,6 +77,11 @@ Rework coverage workflow to support wider applications
 ||old version failed, emailed crc|
 |2021-10-25|still debugging birds...|
 ||appears to be working handling gbif and ebird separately|
+||2021-10-26|
+||gbif run for birds successful|
+||initial test for gbif-wi failed, unloaded library|
+||2021-10-27|
+||wi failed again, rerunning with r361|
 
 
 
