@@ -18,8 +18,7 @@ get_occurrence_data <- function(file_path){
     pts_raw$eventdate <- as.character(rep(NA,nrow(pts_raw)))
     
     pts_raw <- pts_raw %>%
-      rename("scientificname" = sp_binomial,
-             "year" = year) %>%
+      rename("scientificname" = sp_binomial) %>%
       select(scientificname,latitude,longitude,eventdate,year,geohash)
   }
   return(pts_raw)
