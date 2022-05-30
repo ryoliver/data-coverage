@@ -19,7 +19,7 @@ get_occurrence_data <- function(file_path){
     
     pts_raw <- pts_raw %>%
       rename("scientificname" = sp_binomial,
-             "year" = photo_year) %>%
+             "year" = year) %>%
       select(scientificname,latitude,longitude,eventdate,year,geohash)
   }
   return(pts_raw)
