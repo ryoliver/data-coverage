@@ -29,6 +29,7 @@ if(interactive()) {
   rd <- here::here
   
   .outPF <- file.path('/gpfs/ysm/project/jetz/ryo3/projects/data-coverage/analysis')
+  .grid_id <- "v2"
   
 } else {
   library(docopt)
@@ -44,6 +45,7 @@ if(interactive()) {
   source(file.path(.wd,"projects/data-coverage/src/funs/input_parse.r"))
   
   .outPF <- makePath(ag$out)
+  .grid_id <- "v2"
 }
 
 
