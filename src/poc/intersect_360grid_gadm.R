@@ -61,17 +61,31 @@ source(file.path(.wd,"projects/data-coverage/src/startup.r"))
 
 # GADM x 360 grid intersection
 
-grid_file_path <- file.path(.wd,"grid360/output/")
+if (.grid_id == "v2") {
+  
+  message("reading in grid:")
+  grid <- fread(paste0(.wd,"/projects/data-coverage/data/grid360_v2_geohash5/grid360v2_geohash5_prop.csv"))
+  
+  grid <- grid %>% 
+    select(ID_360, geohash, prop) %>%
+    rename(hbwid = ID_360)
+  
+}  else {
+  
+  grid_file_path <- file.path(.wd,"grid360/output/")
+  
+  # read in grid
+  setwd(grid_file_path)
+  files <- list.files(grid_file_path,pattern = "*.csv",full.names = FALSE)
+  
+  message("reading in grid:")
+  start <- Sys.time()
+  grid = data.table::rbindlist(lapply(files, data.table::fread))
+  end <- Sys.time()
+  print(end - start)
+}
+  
 
-# read in grid
-setwd(grid_file_path)
-files <- list.files(grid_file_path,pattern = "*.csv",full.names = FALSE)
-
-message("reading in grid:")
-start <- Sys.time()
-grid = data.table::rbindlist(lapply(files, data.table::fread))
-end <- Sys.time()
-print(end - start)
 
 # read in GADM
 gadm_file_path <- file.path(.wd,"gadm36/output/")
