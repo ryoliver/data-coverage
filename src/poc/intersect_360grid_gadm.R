@@ -70,7 +70,7 @@ if (.grid_id == "v2") {
   
   grid <- grid %>% 
     select(ID_360, geohash, prop) %>%
-    rename(hbwid = ID_360)
+    rename(geom_id = ID_360)
   
 }  else {
   
