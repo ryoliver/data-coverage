@@ -22,8 +22,22 @@ get_intersection <- function(taxa_name){
   }
   
   if (taxa_name == "mammals"){
-    grid.ranges.df <- read.csv(file.path(.wd,"geohash_grid_range_join/mammals_360grid_join.csv"),stringsAsFactors = FALSE)
-    grid_ranges <- rename(grid.ranges.df,"hbwid" = "geom_id")
+    #grid.ranges.df <- read.csv(file.path(.wd,"geohash_grid_range_join/mammals_360grid_join.csv"),stringsAsFactors = FALSE)
+    #grid_ranges <- rename(grid.ranges.df,"hbwid" = "geom_id")
+    
+    # combine MDD mammals x 360 grid V2 intersections
+    file_path <- "/gpfs/loomis/pi/jetz/data/species_datasets/rangemaps/mammals/mdd_mammals/grid_intersections/360gridV2/by_species/"
+  
+    message("reading in intersections...")
+    setwd(file_path)
+    files <- list.files(file_path,pattern = "*.csv",full.names = FALSE)
+    
+    grid_ranges = data.table::rbindlist(lapply(files, data.table::fread))
+    
+    grid_ranges <- grid_ranges %>%
+      select(sciname, ID_360) %>%
+      rename(scientificname = sciname,
+             hbwid = ID_360)
     
     grid_ranges = dplyr::left_join(grid_ranges,synlist,by=c("scientificname"="Synonym")) %>% 
       filter(!is.na(Accepted)) %>% 
