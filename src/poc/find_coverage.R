@@ -37,6 +37,7 @@ if(interactive()) {
   .year_end <- 2019
   .data_source <- "202004"
   .dataset_id <- "gbif"
+  .grid_id <- "v2"
 
 } else {
   library(docopt)
@@ -55,8 +56,9 @@ if(interactive()) {
   .taxa_name <- ag$taxa
   .year_start <- as.numeric(ag$year1)
   .year_end <- as.numeric(ag$year2)
-  .data_source <- "202004"
+  .data_source <- "202207"
   .dataset_id <- ag$dataid
+  .grid_id <- "v2"
 }
 
 
@@ -76,6 +78,13 @@ message(glue("dataset: ",.dataset_id))
 
 ##################################################
 ### occurrence data source
+
+# 2022 data dump
+if (.data_source == "202207"){
+  gbif_file_path <- "/gpfs/gibbs/pi/jetz/data/species_datasets/occurrence/mol/filtered/"
+  ebird_file_path <- "/gpfs/gibbs/pi/jetz/data/species_datasets/occurrence/mol/filtered/ebird/csv/"
+  wi_file_path <-   file.path(.wd,"projects/wi-coverage/data/4-20-2022/") 
+}
 
 # 2020 data dump
 if (.data_source == "202004"){
