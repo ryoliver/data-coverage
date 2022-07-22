@@ -217,7 +217,7 @@ if(.dataset_id == "gbif"){
     
     message("cleaning occurrence data...")
     pts <- prep_occurrence_data(pts_raw)
-    message(paste0("(4) n records: ", nrow(pts_raw)))
+    message(paste0("(4) n records: ", nrow(pts)))
   }
 } 
 if(.dataset_id == "wi"){  
