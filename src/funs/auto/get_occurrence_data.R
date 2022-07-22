@@ -14,7 +14,7 @@ get_occurrence_data <- function(file_path){
   
   if (file_path == wi_file_path) {
     message("reading in files...")
-    pts_raw = fread(paste0(wi_file_path,"WI_data_coverage.csv"))
+    pts_raw = fread(paste0(wi_file_path,"WI_data_coverage_20220530.csv"))
     }
   
   message("check column names...")

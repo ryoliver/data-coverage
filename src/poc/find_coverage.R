@@ -83,7 +83,7 @@ message(glue("dataset: ",.dataset_id))
 if (.data_source == "202207"){
   gbif_file_path <- "/gpfs/gibbs/pi/jetz/data/species_datasets/occurrence/mol/filtered/"
   ebird_file_path <- "/gpfs/gibbs/pi/jetz/data/species_datasets/occurrence/mol/filtered/ebird/csv/"
-  wi_file_path <-   file.path(.wd,"projects/wi-coverage/data/4-20-2022/") 
+  wi_file_path <-   file.path(.wd,"projects/wi-coverage/data/wi-data/data-20220530/") 
 }
 
 # 2020 data dump
