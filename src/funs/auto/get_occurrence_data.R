@@ -6,7 +6,7 @@ get_occurrence_data <- function(file_path){
     
     message("reading in files...")
     pts_raw = data.table::rbindlist(lapply(files, data.table::fread),use.names = TRUE)
-    message(paste0("n records: ", nrow(pts_raw)))
+    message(paste0("(1) n records: ", nrow(pts_raw)))
   }
   
   if (file_path == wi_file_path) {
@@ -17,6 +17,7 @@ get_occurrence_data <- function(file_path){
   message("check column names...")
   colnames(pts_raw) <- tolower(colnames(pts_raw))
   
+  colnames(pts_raw)
   #message("check data format...")
   #pts_raw$eventdate <- as.character(pts_raw$eventdate)
   
@@ -33,6 +34,9 @@ get_occurrence_data <- function(file_path){
   
   pts_raw <- pts_raw %>%
     select(scientificname, year, geohash)
+  
+  message(paste0("(2) n records: ", nrow(pts_raw)))
+  colnames(pts_raw)
   
   return(pts_raw)
 }
