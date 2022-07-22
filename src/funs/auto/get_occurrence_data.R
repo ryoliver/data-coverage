@@ -6,6 +6,9 @@ get_occurrence_data <- function(file_path){
     
     message("reading in files...")
     pts_raw = data.table::rbindlist(lapply(files, data.table::fread),use.names = TRUE)
+    
+    message("truncate geohashes...")
+    pts_raw$geohash <- substr(pts_raw$geohash, 1, 5)
     message(paste0("(1) n records: ", nrow(pts_raw)))
   }
   

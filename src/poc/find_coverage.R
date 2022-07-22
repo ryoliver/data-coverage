@@ -32,7 +32,7 @@ if(interactive()) {
   
   # default to mammals 1950-2019
   .outPF <- file.path('/gpfs/ysm/project/jetz/ryo3/projects/data-coverage/analysis/coverage-output/')
-  .taxa_name <- "birds"
+  .taxa_name <- "mammals"
   .year_start <- 1950
   .year_end <- 2021
   .data_source <- "202207"
