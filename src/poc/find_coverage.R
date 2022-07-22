@@ -35,7 +35,7 @@ if(interactive()) {
   .taxa_name <- "birds"
   .year_start <- 1950
   .year_end <- 2019
-  .data_source <- "202004"
+  .data_source <- "202207"
   .dataset_id <- "gbif"
   .grid_id <- "v2"
 
@@ -104,9 +104,11 @@ if (.data_source == "201810"){
 ### taxa data
 
 # pull synonym list
+message("prepping synonym list...")
 synlist <- prep_taxonomy(.taxa_name)
 
 # pull species x 360 grid intersection
+message("getting species range intersections...")
 grid_ranges <- get_intersection(.taxa_name)
 
 ##################################################
@@ -116,6 +118,7 @@ grid_ranges <- get_intersection(.taxa_name)
 ### finding expected occurrence
 
 # pull GADM x 360 grid intersection
+message("getting GADM x grid intersection...")
 grid_gadm <- fread(file.path(.wd,"projects/data-coverage/analysis/intersection-gadm-360grid.csv"))
 
 # pull candidate geohashes for intersection
