@@ -32,13 +32,14 @@ get_intersection <- function(taxa_name){
     setwd(file_path)
     files <- list.files(file_path,pattern = "*.csv",full.names = FALSE)
     
-    grid_ranges = data.table::rbindlist(lapply(files, data.table::fread))
+    grid_ranges = data.table::rbindlist(lapply(files, data.table::fread), fill = TRUE)
     
     grid_ranges <- grid_ranges %>%
       select(sciname, ID_360) %>%
       rename(scientificname = sciname,
              hbwid = ID_360)
     
+    message("harmonizing intersections...")
     grid_ranges = dplyr::left_join(grid_ranges,synlist,by=c("scientificname"="Synonym")) %>% 
       filter(!is.na(Accepted)) %>% 
       select(hbwid,Accepted) %>%
