@@ -1,15 +1,12 @@
 get_occurrence_data <- function(file_path){
   
-  if (file_path == gbif_file_path && .data_source == "202207") {
-    file_path <- paste0(gbif_file_path,"gbif_",.taxa_name,"/csv")
-  }
-  
   if (file_path != wi_file_path) {
     setwd(file_path)
     files <- list.files(file_path,pattern = "*.csv",full.names = FALSE)
     
     message("reading in files...")
     pts_raw = data.table::rbindlist(lapply(files, data.table::fread),use.names = TRUE)
+    message(paste0("n records: ", nrow(pts_raw)))
   }
   
   if (file_path == wi_file_path) {
