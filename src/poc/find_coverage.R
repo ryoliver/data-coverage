@@ -213,11 +213,11 @@ if(.dataset_id == "gbif"){
   }else{
     message("reading in GBIF data...")
     pts_raw <- get_occurrence_data(gbif_file_path)
-    message(paste0("(3) n records: ", nrow(pts_raw)))
+    message(paste0("(1) n records (raw): ", nrow(pts_raw)))
     
     message("cleaning occurrence data...")
     pts <- prep_occurrence_data(pts_raw)
-    message(paste0("(4) n records: ", nrow(pts)))
+    message(paste0("(4) n records (filtered): ", nrow(pts)))
   }
 } 
 if(.dataset_id == "wi"){  

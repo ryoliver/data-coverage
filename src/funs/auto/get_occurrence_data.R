@@ -9,7 +9,6 @@ get_occurrence_data <- function(file_path){
     
     message("truncate geohashes...")
     pts_raw$geohash <- substr(pts_raw$geohash, 1, 5)
-    message(paste0("(1) n records: ", nrow(pts_raw)))
   }
   
   if (file_path == wi_file_path) {
@@ -37,9 +36,6 @@ get_occurrence_data <- function(file_path){
   
   pts_raw <- pts_raw %>%
     select(scientificname, year, geohash)
-  
-  message(paste0("(2) n records: ", nrow(pts_raw)))
-  colnames(pts_raw)
   
   return(pts_raw)
 }

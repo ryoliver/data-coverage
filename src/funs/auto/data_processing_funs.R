@@ -7,19 +7,13 @@ prep_occurrence_data <- function(occ_data){
   
   occ_data <- occ_data %>% filter(year >= .year_start) 
   
-  message(paste0("(1) n occ: ", nrow(occ_data)))
-  
   # find distinct records
   message("finding distinct observations...")
   occ_data <- occ_data %>% distinct(scientificname,geohash,year,.keep_all = TRUE)
 
-  message(paste0("(2) n occ: ", nrow(occ_data)))
-  
   # join observations with synonym list
   message("joining with synonym list...")
   occ_syn_join=dplyr::left_join(occ_data,synlist,by=c("scientificname"="Synonym"))
-  
-  message(paste0("(3) n occ: ", nrow(occ_syn_join)))
   
   # filter out observations without synonym match or date
   message("harmonizing with synonym list...")
@@ -28,34 +22,15 @@ prep_occurrence_data <- function(occ_data){
     rename("scientificname" = "Accepted") %>%
     distinct(scientificname,year,geohash)
   
-  message(paste0("(4) n occ: ", nrow(occ_data)))
+  message(paste0("(2) n records (harmonized): ", nrow(occ_data)))
   
   message("joining observations with 360 grid x GADM...")
   # filter to just geohashes where intersection could be confirmed
   # more conservative than approach above
-  #grid_gadm_occ <- left_join(occ_data,candidate_gh, by = "geohash") %>%
-  #  filter(!is.na(hbwid)) %>%
-  #  filter(!is.na(country)) %>%
-  #  distinct(hbwid,country,scientificname,year)
-  
-  grid_gadm_occ <- left_join(occ_data,candidate_gh, by = "geohash") 
-  
-  message(paste0("(1) n: ", nrow(grid_gadm_occ)))
-  
-  grid_gadm_occ <- grid_gadm_occ %>%
-    filter(!is.na(hbwid)) 
-  
-  message(paste0("(2) n: ", nrow(grid_gadm_occ)))
-  
-  grid_gadm_occ <- grid_gadm_occ %>%
-    filter(!is.na(country)) 
-  
-  message(paste0("(3) n: ", nrow(grid_gadm_occ)))
-  
-  grid_gadm_occ <- grid_gadm_occ %>%
+  grid_gadm_occ <- left_join(occ_data,candidate_gh, by = "geohash") %>%
+    filter(!is.na(hbwid)) %>%
+    filter(!is.na(country)) %>%
     distinct(hbwid,country,scientificname,year)
-  
-  message(paste0("(5) n occ: ", nrow(grid_gadm_occ)))
   
   # join with expected grid cells to restrict observations only within ranges
   message("filtering to observations within range...")
@@ -64,7 +39,7 @@ prep_occurrence_data <- function(occ_data){
     filter(!is.na(year)) %>%
     distinct(hbwid,country,scientificname,year,.keep_all = TRUE)
   
-  message(paste0("(6) n occ: ", nrow(occ_data)))
+  message(paste0("(3) n occ (filtered to range): ", nrow(occ_data)))
   
   return(occ_data)
 }
