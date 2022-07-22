@@ -33,9 +33,26 @@ prep_occurrence_data <- function(occ_data){
   message("joining observations with 360 grid x GADM...")
   # filter to just geohashes where intersection could be confirmed
   # more conservative than approach above
-  grid_gadm_occ <- left_join(occ_data,candidate_gh, by = "geohash") %>%
-    filter(!is.na(hbwid)) %>%
-    filter(!is.na(country)) %>%
+  #grid_gadm_occ <- left_join(occ_data,candidate_gh, by = "geohash") %>%
+  #  filter(!is.na(hbwid)) %>%
+  #  filter(!is.na(country)) %>%
+  #  distinct(hbwid,country,scientificname,year)
+  
+  grid_gadm_occ <- left_join(occ_data,candidate_gh, by = "geohash") 
+  
+  message(paste0("(1) n: ", nrow(grid_gadm_occ)))
+  
+  grid_gadm_occ <- grid_gadm_occ %>%
+    filter(!is.na(hbwid)) 
+  
+  message(paste0("(2) n: ", nrow(grid_gadm_occ)))
+  
+  grid_gadm_occ <- grid_gadm_occ %>%
+    filter(!is.na(country)) 
+  
+  message(paste0("(3) n: ", nrow(grid_gadm_occ)))
+  
+  grid_gadm_occ <- grid_gadm_occ %>%
     distinct(hbwid,country,scientificname,year)
   
   message(paste0("(5) n occ: ", nrow(grid_gadm_occ)))
