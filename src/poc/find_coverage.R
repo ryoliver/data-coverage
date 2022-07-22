@@ -34,7 +34,7 @@ if(interactive()) {
   .outPF <- file.path('/gpfs/ysm/project/jetz/ryo3/projects/data-coverage/analysis/coverage-output/')
   .taxa_name <- "birds"
   .year_start <- 1950
-  .year_end <- 2019
+  .year_end <- 2021
   .data_source <- "202207"
   .dataset_id <- "gbif"
   .grid_id <- "v2"

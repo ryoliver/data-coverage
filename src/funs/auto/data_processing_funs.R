@@ -7,14 +7,19 @@ prep_occurrence_data <- function(occ_data){
   
   occ_data <- occ_data %>% filter(year >= .year_start) 
   
+  message(paste0("(1) n occ: ", nrow(occ_data)))
+  
   # find distinct records
   message("finding distinct observations...")
   occ_data <- occ_data %>% distinct(scientificname,geohash,year,.keep_all = TRUE)
 
+  message(paste0("(2) n occ: ", nrow(occ_data)))
   
   # join observations with synonym list
   message("joining with synonym list...")
   occ_syn_join=dplyr::left_join(occ_data,synlist,by=c("scientificname"="Synonym"))
+  
+  message(paste0("(3) n occ: ", nrow(occ_syn_join)))
   
   # filter out observations without synonym match or date
   message("harmonizing with synonym list...")
@@ -22,6 +27,8 @@ prep_occurrence_data <- function(occ_data){
     select(year,Accepted,geohash) %>%
     rename("scientificname" = "Accepted") %>%
     distinct(scientificname,year,geohash)
+  
+  message(paste0("(4) n occ: ", nrow(occ_data)))
   
   message("joining observations with 360 grid x GADM...")
   # filter to just geohashes where intersection could be confirmed
@@ -31,12 +38,16 @@ prep_occurrence_data <- function(occ_data){
     filter(!is.na(country)) %>%
     distinct(hbwid,country,scientificname,year)
   
+  message(paste0("(5) n occ: ", nrow(grid_gadm_occ)))
+  
   # join with expected grid cells to restrict observations only within ranges
   message("filtering to observations within range...")
   range_obs_join <- dplyr::left_join(grid_gadm_ranges,grid_gadm_occ,by=c("hbwid","country","scientificname"))
   occ_data <- range_obs_join %>% 
     filter(!is.na(year)) %>%
     distinct(hbwid,country,scientificname,year,.keep_all = TRUE)
+  
+  message(paste0("(6) n occ: ", nrow(occ_data)))
   
   return(occ_data)
 }
