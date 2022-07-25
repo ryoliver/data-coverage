@@ -8,8 +8,12 @@ prep_taxonomy <- function(taxa_name){
   }
   
   if(taxa_name == "birds"){
-    synlist_file <- paste0(synlist_dir,"Birds_20191204.csv")
-    synlist <- convert_synlist(synlist_file) %>% filter(U.or.A == "U") # filter out ambiguous name matches
+    #synlist_file <- paste0(synlist_dir,"Birds_20191204.csv")
+    synlist_file <- paste0(synlist_dir,"MOL-lists/MOL_AvesTaxonomy_v2.2_Complete.csv")
+    
+    synlist <- convert_synlist(synlist_file) %>% 
+      filter(U.or.A == "U") %>% # filter out ambiguous name matches
+      select(Synonym, Accepted)
     
     syns_birds_manual <- data.frame("Accepted" = c("Ardea albus",
                                                    "Ardea albus",
@@ -38,14 +42,31 @@ prep_taxonomy <- function(taxa_name){
                                                   "Alethe castanea",
                                                   "Neomorphus squamiger",
                                                   "Psophia obscura",
-                                                  "Turdus nudigenis")) %>%
-      mutate("U.or.A" = rep("U",nrow(.)))
-    synlist <- rbind(synlist,syns_birds_manual)
+                                                  "Turdus nudigenis")) 
+    synlist_MOL <- rbind(synlist,syns_birds_manual)
+    
+    synlist_WI <- fread(paste0(synlist_dir, "WI-lists/Birds_WI_to_MOL_harmonized_20220725.csv")) %>%
+      select(sp_binomial, Accepted_MOL) %>%
+      rename(Accepted = Accepted_MOL,
+             Synonym = sp_binomial)
+    
+    synlist <- rbind(synlist_MOL, synlist_WI)
   }
   
   if(taxa_name == "mammals"){
-    synlist_file <- paste0(synlist_dir,"Mammal_20191204.csv")
-    synlist <- convert_synlist(synlist_file) %>% filter(U.or.A == "U") # filter out ambiguous name matches
+    #synlist_file <- paste0(synlist_dir,"Mammal_20191204.csv")
+    
+    #synlist <- convert_synlist(synlist_file) %>% filter(U.or.A == "U") # filter out ambiguous name matches
+    
+    synlist_MOL <- fread(paste0(synlist_dir, "MOL-lists/MOL_MammaliaTaxonomy_v2.2_LF.csv")) %>%
+      select(Accepted, Synonym)
+    
+    synlist_WI <- fread(paste0(synlist_dir, "WI-lists/Mammals_WI_to_MOL_harmonized_20220725.csv")) %>%
+      select(sp_binomial, Accepted_MOL) %>%
+      rename(Accepted = Accepted_MOL,
+             Synonym = sp_binomial)
+    
+    synlist <- rbind(synlist_MOL, synlist_WI)
   }
   
   if(taxa_name == "reptiles"){
