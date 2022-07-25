@@ -19,8 +19,9 @@ get_intersection <- function(taxa_name){
     
     grid_ranges = dplyr::left_join(grid_ranges,synlist,by=c("sciname"="Synonym")) %>% 
       filter(!is.na(Accepted)) %>% 
-      select(hbwid,Accepted) %>%
-      rename("scientificname" = "Accepted") 
+      select(ID_360,Accepted) %>%
+      rename("scientificname" = "Accepted",
+             "hbwid" = "ID_360") 
   }
   
   if (taxa_name == "mammals"){
