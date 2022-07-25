@@ -105,6 +105,9 @@ if (.data_source == "201810"){
 ### taxa data
 
 # pull synonym list
+
+synlist_dir <- paste0(.wd, "/projects/data-coverage/data/synonym-lists/lists-20220725/")
+
 message("prepping synonym list...")
 synlist <- prep_taxonomy(.taxa_name)
 
