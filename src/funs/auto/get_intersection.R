@@ -15,7 +15,7 @@ get_intersection <- function(taxa_name){
     grid.ranges.df <- read.csv(file.path(.wd,"projects/data-coverage/data/range-intersections/birds-360gridv2/birds_360grid.csv"),stringsAsFactors = FALSE)
     
     grid_ranges <- grid.ranges.df %>%
-      filter(seasonality %in% c(1,2))
+      filter(season %in% c(1,2))
     
     grid_ranges = dplyr::left_join(grid_ranges,synlist,by=c("sciname"="Synonym")) %>% 
       filter(!is.na(Accepted)) %>% 
