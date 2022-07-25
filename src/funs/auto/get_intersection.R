@@ -11,11 +11,13 @@ get_intersection <- function(taxa_name){
   }
   
   if (taxa_name == "birds"){
-    grid.ranges.df <- read.csv(file.path(.wd,"geohash_grid_range_join/birds_360grid_join.csv"),stringsAsFactors = FALSE)
+    #grid.ranges.df <- read.csv(file.path(.wd,"geohash_grid_range_join/birds_360grid_join.csv"),stringsAsFactors = FALSE)
+    grid.ranges.df <- read.csv(file.path(.wd,"projects/data-coverage/data/range-intersections/birds-360gridv2/birds_360grid.csv"),stringsAsFactors = FALSE)
+    
     grid_ranges <- grid.ranges.df %>%
       filter(seasonality %in% c(1,2))
     
-    grid_ranges = dplyr::left_join(grid_ranges,synlist,by=c("scientificname"="Synonym")) %>% 
+    grid_ranges = dplyr::left_join(grid_ranges,synlist,by=c("sciname"="Synonym")) %>% 
       filter(!is.na(Accepted)) %>% 
       select(hbwid,Accepted) %>%
       rename("scientificname" = "Accepted") 
