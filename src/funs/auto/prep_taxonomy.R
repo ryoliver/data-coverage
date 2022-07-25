@@ -48,7 +48,8 @@ prep_taxonomy <- function(taxa_name){
       rename(Accepted = Accepted_MOL,
              Synonym = sp_binomial)
     
-    synlist <- rbind(synlist_MOL, synlist_WI)
+    synlist <- rbind(synlist_MOL, synlist_WI) %>%
+      filter(!is.na(Accepted))
   }
   
   if(taxa_name == "mammals"){
@@ -64,7 +65,8 @@ prep_taxonomy <- function(taxa_name){
       rename(Accepted = Accepted_MOL,
              Synonym = sp_binomial)
     
-    synlist <- rbind(synlist_MOL, synlist_WI)
+    synlist <- rbind(synlist_MOL, synlist_WI) %>%
+      filter(!is.na(Accepted))
   }
   
   if(taxa_name == "reptiles"){
