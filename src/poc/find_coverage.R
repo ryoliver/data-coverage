@@ -42,13 +42,13 @@ if(interactive()) {
 } else {
   library(docopt)
   library(rprojroot)
-  library(whereami)
+  #library(whereami)
   
   ag <- docopt(doc, version = '0.1\n')
   .wd <- '/gpfs/ysm/project/jetz/ryo3' 
-  .script <-  whereami::thisfile()
-  .test <- as.logical(ag$test)
-  rd <- is_rstudio_project$make_fix_file(.script)
+  #.script <-  whereami::thisfile()
+  #.test <- as.logical(ag$test)
+  #rd <- is_rstudio_project$make_fix_file(.script)
   
   source(file.path(.wd,"projects/data-coverage/src/funs/input_parse.r"))
   
