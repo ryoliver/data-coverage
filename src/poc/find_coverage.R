@@ -275,19 +275,25 @@ if(.dataset_id == "gbif-wi"){
 ##################################################
 ### find coverage
 # prep occurrence data for summaries
+
+if (1 == 2){
 message("prep data summaries...")
 summary_data <- prep_data_summary(pts_raw)
 
 # compute data summaries
 message("compute data summaries...")
+message("1")
 species_national_data_summary <-  summarize_species_national_data(summary_data)
+message("2")
 species_data_summary <- summarize_species_data(summary_data)
+message("3")
 grid_national_data_summary <- summarize_grid_national_data(summary_data)
+message("4")
 grid_data_summary <- summarize_grid_data(summary_data)
-
+message("5")
 species_grid_national_data_summary <- summarize_species_grid_national_data(summary_data)
 fwrite(species_grid_national_data_summary,paste0(.outPF,.taxa_name,"_species_grid_data_summary_",.dataset_id,"_",.data_source,".csv"))
-
+}
 # find coverage!
 
 message("finding national coverage...")
