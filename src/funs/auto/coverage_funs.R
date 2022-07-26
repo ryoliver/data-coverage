@@ -23,21 +23,21 @@ find_national_coverage <- function(occ_data){
   country.species <- country.species %>% 
     dplyr::mutate(Oci_Eci = Oci/Eci)
   
-  country.species <- left_join(country.species,species_national_data_summary, by = c("country","scientificname","year"))
-  country.species <- country.species %>%
-    mutate(n_records = ifelse(is.na(n_records),0,n_records))
+  #country.species <- left_join(country.species,species_national_data_summary, by = c("country","scientificname","year"))
+  #country.species <- country.species %>%
+  #  mutate(n_records = ifelse(is.na(n_records),0,n_records))
   
   # write out species level coverage within nations
-  fwrite(country.species,paste0(.outPF,.taxa_name,"_species_national_coverage_",.dataset_id,"_",.data_source,".csv"))
+  #fwrite(country.species,paste0(.outPF,.taxa_name,"_species_national_coverage_",.dataset_id,"_",.data_source,".csv"))
   
   # find national coverage values
-  coverage <- country.species %>% 
-    group_by(country,year) %>% 
-    summarise(ssii1 = mean(Oci_Eci,na.rm=TRUE), 
-              ssii2 = sum(Oci/sum(Eci,na.rm=TRUE),na.rm=TRUE),
-              ssii3 = sum(Oci_Eci*(Eci_Eki/Ecl_Ekl),na.rm=TRUE),
-              ssii4 = sum(Oci*Eci_Eki/sum(Eci*Eci_Eki,na.rm = TRUE),na.rm = TRUE),
-              n_records = sum(n_records)) 
+  #coverage <- country.species %>% 
+  #  group_by(country,year) %>% 
+  #  summarise(ssii1 = mean(Oci_Eci,na.rm=TRUE), 
+  #            ssii2 = sum(Oci/sum(Eci,na.rm=TRUE),na.rm=TRUE),
+  #            ssii3 = sum(Oci_Eci*(Eci_Eki/Ecl_Ekl),na.rm=TRUE),
+  #            ssii4 = sum(Oci*Eci_Eki/sum(Eci*Eci_Eki,na.rm = TRUE),na.rm = TRUE),
+  #            n_records = sum(n_records)) 
   
   return(coverage)
 }

@@ -276,17 +276,17 @@ if(.dataset_id == "gbif-wi"){
 ### find coverage
 # prep occurrence data for summaries
 message("prep data summaries...")
-summary_data <- prep_data_summary(pts_raw)
+#summary_data <- prep_data_summary(pts_raw)
 
 # compute data summaries
 message("compute data summaries...")
-species_national_data_summary <-  summarize_species_national_data(summary_data)
-species_data_summary <- summarize_species_data(summary_data)
-grid_national_data_summary <- summarize_grid_national_data(summary_data)
-grid_data_summary <- summarize_grid_data(summary_data)
+#species_national_data_summary <-  summarize_species_national_data(summary_data)
+#species_data_summary <- summarize_species_data(summary_data)
+#grid_national_data_summary <- summarize_grid_national_data(summary_data)
+#grid_data_summary <- summarize_grid_data(summary_data)
 
-species_grid_national_data_summary <- summarize_species_grid_national_data(summary_data)
-fwrite(species_grid_national_data_summary,paste0(.outPF,.taxa_name,"_species_grid_data_summary_",.dataset_id,"_",.data_source,".csv"))
+#species_grid_national_data_summary <- summarize_species_grid_national_data(summary_data)
+#fwrite(species_grid_national_data_summary,paste0(.outPF,.taxa_name,"_species_grid_data_summary_",.dataset_id,"_",.data_source,".csv"))
 
 # find coverage!
 
@@ -294,6 +294,7 @@ message("finding national coverage...")
 national_coverage <- find_national_coverage(pts)
 fwrite(national_coverage,paste0(.outPF,.taxa_name,"_national_coverage_",.dataset_id,"_",.data_source,".csv"))
 
+if (1 == 2){
 message("finding species coverage...")
 species_coverage <- find_species_coverage(pts)
 fwrite(species_coverage,paste0(.outPF,.taxa_name,"_species_coverage_",.dataset_id,"_",.data_source,".csv"))
@@ -307,3 +308,4 @@ grid_coverage <- find_grid_coverage(pts)
 fwrite(grid_coverage,paste0(.outPF,.taxa_name,"_grid_coverage_",.dataset_id,"_",.data_source,".csv"))
 
 message(glue("coverage complete for ",.taxa_name," ",.year_start,"-",.year_end, " using ",.dataset_id))
+}
