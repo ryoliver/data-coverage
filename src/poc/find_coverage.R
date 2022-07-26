@@ -276,7 +276,7 @@ if(.dataset_id == "gbif-wi"){
 ### find coverage
 # prep occurrence data for summaries
 message("prep data summaries...")
-#summary_data <- prep_data_summary(pts_raw)
+summary_data <- prep_data_summary(pts_raw)
 
 # compute data summaries
 message("compute data summaries...")
