@@ -64,7 +64,7 @@ prep_data_summary <- function(occ_data){
   # filter out observations without synonym match or date
   occ_data <- occ_data %>% 
     filter(year >= .year_start) %>%
-    left_join(occ_data,synlist,by=c("scientificname"="Synonym")) %>%
+    left_join(., synlist, by=c("scientificname"="Synonym")) %>%
     filter(!is.na(Accepted)) %>% 
     select(Accepted,geohash,year) %>%
     rename("scientificname" = "Accepted") 
