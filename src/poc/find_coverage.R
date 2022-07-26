@@ -300,7 +300,6 @@ message("finding national coverage...")
 national_coverage <- find_national_coverage(pts)
 fwrite(national_coverage,paste0(.outPF,.taxa_name,"_national_coverage_",.dataset_id,"_",.data_source,".csv"))
 
-if (1 == 2){
 message("finding species coverage...")
 species_coverage <- find_species_coverage(pts)
 fwrite(species_coverage,paste0(.outPF,.taxa_name,"_species_coverage_",.dataset_id,"_",.data_source,".csv"))
@@ -314,4 +313,3 @@ grid_coverage <- find_grid_coverage(pts)
 fwrite(grid_coverage,paste0(.outPF,.taxa_name,"_grid_coverage_",.dataset_id,"_",.data_source,".csv"))
 
 message(glue("coverage complete for ",.taxa_name," ",.year_start,"-",.year_end, " using ",.dataset_id))
-}

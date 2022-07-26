@@ -70,10 +70,10 @@ find_species_coverage <- function(occ_data){
     dplyr::mutate(ssii = Oi/Eki)
   
   # join with species data summary
-  species <- left_join(species,species_data_summary, by = c("scientificname","year"))
+  #species <- left_join(species,species_data_summary, by = c("scientificname","year"))
   
-  species <- species %>%
-    mutate(n_records = ifelse(is.na(n_records),0,n_records)) 
+  #species <- species %>%
+  #  mutate(n_records = ifelse(is.na(n_records),0,n_records)) 
   
   return(species)
 }
@@ -123,7 +123,7 @@ find_grid_national_coverage <- function(occ_data){
     mutate(ssii4 = Ogsi/Egsi) 
   
   coverage <- left_join(coverage,coverage_steward,by = c("country","hbwid","year"))
-  coverage <- left_join(coverage,grid_national_data_summary,by = c("country","hbwid","year"))
+  #coverage <- left_join(coverage,grid_national_data_summary,by = c("country","hbwid","year"))
   
   return(coverage)
 }
@@ -154,7 +154,7 @@ find_grid_coverage <- function(occ_data){
   coverage <- coverage %>%
     mutate(ssii = Ogi/Egi) 
   
-  coverage <- left_join(coverage,grid_data_summary,by = c("hbwid","year"))
+  #coverage <- left_join(coverage,grid_data_summary,by = c("hbwid","year"))
   
   return(coverage)
 }
