@@ -61,10 +61,11 @@ prep_data_summary <- function(occ_data){
   record_summary$no_dups <- nrow(occ_data)
   
   # join observations with synonym list
-  occ_syn_join=dplyr::left_join(occ_data,synlist,by=c("scientificname"="Synonym"))
-  
   # filter out observations without synonym match or date
-  occ_data <- occ_syn_join %>% filter(!is.na(Accepted)) %>% 
+  occ_data <- occ_data %>% 
+    filter(year >= .year_start) %>%
+    left_join(occ_data,synlist,by=c("scientificname"="Synonym")) %>%
+    filter(!is.na(Accepted)) %>% 
     select(Accepted,geohash,year) %>%
     rename("scientificname" = "Accepted") 
   
