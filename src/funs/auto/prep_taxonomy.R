@@ -60,12 +60,18 @@ prep_taxonomy <- function(taxa_name){
     synlist_MOL <- fread(paste0(synlist_dir, "MOL-lists/MOL_MammaliaTaxonomy_v2.2_LF.csv")) %>%
       select(Accepted, Synonym)
     
+    synlist_MOL_adapted <- synlist_MOL %>%
+      separate(Synonym, c("a", "b", "c")) %>%
+      unite("Synonym", a:b, sep = " ") %>%
+      select(Accepted, Synonym) %>%
+      distinct(Accepted, Synonym)
+    
     synlist_WI <- fread(paste0(synlist_dir, "WI-lists/Mammals_WI_to_MOL_harmonized_20220725.csv")) %>%
       select(sp_binomial, Accepted_MOL) %>%
       rename(Accepted = Accepted_MOL,
              Synonym = sp_binomial)
     
-    synlist <- rbind(synlist_MOL, synlist_WI) %>%
+    synlist <- rbind(synlist_MOL, synlist_MOL_adapted, synlist_WI) %>%
       filter(!is.na(Accepted))
   }
   
