@@ -29,7 +29,7 @@ get_intersection <- function(taxa_name){
     #grid_ranges <- rename(grid.ranges.df,"hbwid" = "geom_id")
     
     # combine MDD mammals x 360 grid V2 intersections
-    file_path <- "/gpfs/gibbs/pi/jetz/data/species_datasets/rangemaps/mammals/mdd_mammals/grid_intersections/360gridV2/by_species/"
+    file_path <- "/gpfs/gibbs/pi/jetz/data/species_datasets/rangemaps/mammals/mdd_mammals/intersections/360gridV2/by_species/"
   
     message("reading in intersections...")
     setwd(file_path)
