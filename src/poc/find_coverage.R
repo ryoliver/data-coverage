@@ -80,6 +80,14 @@ message(glue("dataset: ",.dataset_id))
 ### occurrence data source
 
 # 2022 data dump
+
+if (.data_source == "202207"){
+  
+  gbif_file_path <- paste0("/gpfs/gibbs/pi/jetz/data/species_datasets/occurrence/mol/filtered/","gbif_",.taxa_name,"/csv/")
+  ebird_file_path <- "/gpfs/gibbs/pi/jetz/data/species_datasets/occurrence/mol/filtered/ebird/csv/"
+  wi_file_path <-   file.path(.wd,"projects/wi-coverage/data/wi-data/data-20221126/") 
+}
+
 if (.data_source == "202207"){
   
   gbif_file_path <- paste0("/gpfs/gibbs/pi/jetz/data/species_datasets/occurrence/mol/filtered/","gbif_",.taxa_name,"/csv/")
