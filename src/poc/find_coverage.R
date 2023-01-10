@@ -35,7 +35,7 @@ if(interactive()) {
   .taxa_name <- "mammals"
   .year_start <- 1950
   .year_end <- 2021
-  .data_source <- "202207"
+  .data_source <- "202211"
   .dataset_id <- "gbif"
   .grid_id <- "v2"
 
@@ -56,7 +56,7 @@ if(interactive()) {
   .taxa_name <- ag$taxa
   .year_start <- as.numeric(ag$year1)
   .year_end <- as.numeric(ag$year2)
-  .data_source <- "202207"
+  .data_source <- "202211"
   .dataset_id <- ag$dataid
   .grid_id <- "v2"
 }
@@ -81,7 +81,7 @@ message(glue("dataset: ",.dataset_id))
 
 # 2022 data dump
 
-if (.data_source == "202207"){
+if (.data_source == "202211"){
   
   gbif_file_path <- paste0("/gpfs/gibbs/pi/jetz/data/species_datasets/occurrence/mol/filtered/","gbif_",.taxa_name,"/csv/")
   ebird_file_path <- "/gpfs/gibbs/pi/jetz/data/species_datasets/occurrence/mol/filtered/ebird/csv/"
