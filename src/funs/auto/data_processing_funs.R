@@ -7,6 +7,9 @@ prep_occurrence_data <- function(occ_data){
   
   occ_data <- occ_data %>% filter(year >= .year_start) 
   
+  n_species_original <- n_distinct(occ_data$scientificname)
+  message(paste0("n species original): ", n_species_original))
+  
   # find distinct records
   message("finding distinct observations...")
   occ_data <- occ_data %>% distinct(scientificname,geohash,year,.keep_all = TRUE)
@@ -22,7 +25,9 @@ prep_occurrence_data <- function(occ_data){
     rename("scientificname" = "Accepted") %>%
     distinct(scientificname,year,geohash)
   
-  message(paste0("(2) n records (harmonized): ", nrow(occ_data)))
+  n_species_harmonized <- n_distinct(occ_data$scientificname)
+  
+  message(paste0("n species harmonized): ", n_species_harmonized))
   
   message("joining observations with 360 grid x GADM...")
   # filter to just geohashes where intersection could be confirmed

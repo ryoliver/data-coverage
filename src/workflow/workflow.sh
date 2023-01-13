@@ -22,9 +22,9 @@ fi
 
 #find covearge
 #sbatch $src/workflow/run_coverage_large.sh mammals 2010 2022 gbif-wi
-#sbatch $src/workflow/run_coverage_large.sh mammals 2010 2022 gbif
-#sbatch $src/workflow/run_coverage_large.sh mammals 2010 2022 wi
+sbatch $src/workflow/run_coverage_large.sh mammals 2010 2022 gbif
+sbatch $src/workflow/run_coverage_large.sh mammals 2010 2022 wi
 
 sbatch $src/workflow/run_coverage.sh birds 2010 2022 wi
-sbatch $src/workflow/run_coverage_large.sh birds 2010 2022 gbif-wi
+#sbatch $src/workflow/run_coverage_large.sh birds 2010 2022 gbif-wi
 sbatch $src/workflow/run_coverage_large.sh birds 2010 2022 gbif
