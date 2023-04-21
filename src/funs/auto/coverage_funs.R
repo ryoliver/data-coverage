@@ -156,5 +156,10 @@ find_grid_coverage <- function(occ_data){
   
   #coverage <- left_join(coverage,grid_data_summary,by = c("hbwid","year"))
   
+  grid.data.summary <- occ_data %>%
+    distinct(hbwid, scientificname)
+  
+  fwrite(grid.data.summary,paste0(.outPF,.taxa_name,"_grid_summary_",.dataset_id,"_",.data_source,".csv"))
+  
   return(coverage)
 }
